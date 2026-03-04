@@ -215,7 +215,7 @@ function confirmOrder() {
   let items = cart.map(i => i.name).join(", ");
   let total = cart.reduce((sum,i)=>sum+parseInt(i.price),0);
 
-  fetch(webAppURL, {
+  fetch("https://script.google.com/macros/s/AKfycbyUu-xe6ccYKtfKb5SbgnYlJsTZiunn1m9nrhsv65RESoSOIQtVleLm6weeK0EyVwoF/exec", {, {
     method: "POST",
     body: JSON.stringify({
       name: name,
@@ -239,4 +239,5 @@ function confirmOrder() {
 </script>
 </body>
 </html>
+
 
