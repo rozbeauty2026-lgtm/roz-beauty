@@ -175,6 +175,68 @@ function checkout() {
   window.open(`https://wa.me/249111311358?text=${message}`);
 }
 </script>
+<section id="checkout-section" style="padding:30px;text-align:center;">
+  <h2>تأكيد الطلب</h2>
 
+  <input type="text" id="customer-name" placeholder="اسمك" 
+  style="display:block;margin:10px auto;padding:10px;width:80%;max-width:300px;">
+
+  <input type="text" id="customer-phone" placeholder="رقم الهاتف" 
+  style="display:block;margin:10px auto;padding:10px;width:80%;max-width:300px;">
+
+  <input type="text" id="customer-address" placeholder="العنوان" 
+  style="display:block;margin:10px auto;padding:10px;width:80%;max-width:300px;">
+
+  <button onclick="confirmOrder()" 
+  style="background:#ff4d8d;color:white;padding:12px 20px;border:none;border-radius:10px;">
+  تأكيد الطلب
+  </button>
+</section>
+
+<script>
+const webAppURL = "https://script.google.com/macros/s/AKfycbyUu-xe6ccYKtfKb5SbgnYlJsTZiunn1m9nrhsv65RESoSOIQtVleLm6weeK0EyVwoF/exec";
+
+function confirmOrder() {
+
+  if(cart.length === 0){
+    alert("السلة فارغة 🛒");
+    return;
+  }
+
+  const name = document.getElementById("customer-name").value;
+  const phone = document.getElementById("customer-phone").value;
+  const address = document.getElementById("customer-address").value;
+
+  if (!name || !phone || !address) {
+    alert("من فضلك اكمل كل البيانات");
+    return;
+  }
+
+  let items = cart.map(i => i.name).join(", ");
+  let total = cart.reduce((sum,i)=>sum+parseInt(i.price),0);
+
+  fetch(webAppURL, {
+    method: "POST",
+    body: JSON.stringify({
+      name: name,
+      phone: phone,
+      address: address,
+      items: items,
+      total: total
+    })
+  })
+  .then(res => res.text())
+  .then(response => {
+      alert("تم استلام طلبك بنجاح 💖 سنتواصل معك قريباً");
+      cart = [];
+      updateCart();
+  })
+  .catch(err => {
+      alert("حصل خطأ، جربي مرة تانية");
+  });
+
+}
+</script>
 </body>
 </html>
+
