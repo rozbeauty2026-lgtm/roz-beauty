@@ -3,83 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Roz Beauty</title>
 
 <style>
+
 body{
-  font-family: Arial;
-  margin:0;
-  background:#f8f8f8;
-  text-align:center;
+font-family: Arial;
+margin:0;
+background:#f2f2f2;
+direction:rtl;
 }
 
 header{
-  background:#8e244d;
-  color:white;
-  padding:15px;
-  font-size:22px;
+background:#8e244d;
+color:white;
+padding:15px;
+font-size:22px;
+text-align:center;
+font-weight:bold;
+}
+
+.searchBox{
+padding:10px;
+background:white;
+}
+
+.searchBox input{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:1px solid #ddd;
 }
 
 #products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:15px;
-  padding:15px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+gap:15px;
+padding:15px;
 }
 
 .product-card{
-  background:white;
-  border-radius:12px;
-  padding:10px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+background:white;
+border-radius:12px;
+padding:10px;
+box-shadow:0 3px 8px rgba(0,0,0,0.1);
+text-align:center;
+transition:0.3s;
+}
+
+.product-card:hover{
+transform:scale(1.03);
 }
 
 .product-card img{
-  width:100%;
-  border-radius:10px;
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.price{
+color:#8e244d;
+font-weight:bold;
+margin-top:5px;
 }
 
 button{
-  background:#8e244d;
-  color:white;
-  border:none;
-  padding:8px 12px;
-  border-radius:8px;
-  margin-top:8px;
+background:#8e244d;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:8px;
+margin-top:8px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
 }
 
 #cartBox{
-  background:white;
-  margin:20px;
-  padding:15px;
-  border-radius:12px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+background:white;
+margin:15px;
+padding:15px;
+border-radius:12px;
+box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin-bottom:6px;
+}
+
+.remove{
+background:red;
+padding:3px 7px;
+font-size:12px;
 }
 
 input{
-  width:90%;
-  padding:8px;
-  margin:6px 0;
+width:100%;
+padding:8px;
+margin-top:6px;
+border-radius:8px;
+border:1px solid #ddd;
 }
+
+.checkout{
+margin-top:10px;
+width:100%;
+font-size:16px;
+}
+
 </style>
 </head>
 
 <body>
 
-<header>Roz Beauty Store 💄</header>
+<header>
+Roz Beauty Store 💄
+</header>
+
+<div class="searchBox">
+<input type="text" placeholder="ابحث عن منتج..." onkeyup="searchProducts(this.value)">
+</div>
 
 <div id="products"></div>
 
 <div id="cartBox">
+
 <h3>السلة 🛒</h3>
+
 <div id="cartItems"></div>
-<p><strong id="totalPrice"></strong></p>
+
+<p id="totalPrice"></p>
+
+<h4>معلومات الطلب</h4>
 
 <input type="text" id="name" placeholder="الاسم">
+
 <input type="text" id="phone" placeholder="رقم الهاتف">
+
 <input type="text" id="address" placeholder="العنوان">
 
-<button onclick="submitOrder()">تأكيد الطلب</button>
+<button class="checkout" onclick="submitOrder()">تأكيد الطلب</button>
+
 </div>
 
 <form id="orderForm" method="POST"
@@ -97,75 +167,148 @@ target="hidden_iframe">
 
 <script>
 
-const sheetURL = "https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
+const sheetURL =
+"https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 
+let products = [];
 let cart = [];
 
 fetch(sheetURL)
 .then(res => res.json())
 .then(data => {
-  const container = document.getElementById("products");
-  data.forEach(product => {
-    container.innerHTML += `
-      <div class="product-card">
-        <img src="${product.image}">
-        <h4>${product.name}</h4>
-        <p>${product.description}</p>
-        <strong>${product.price} جنيه</strong><br>
-        <button onclick='addToCart("${product.name}", ${product.price})'>
-        أضف للسلة
-        </button>
-      </div>
-    `;
-  });
+
+products = data;
+
+displayProducts(products);
+
 });
 
-function addToCart(name, price){
-  cart.push({name, price});
-  updateCart();
+function displayProducts(list){
+
+const container = document.getElementById("products");
+
+container.innerHTML = "";
+
+list.forEach(product=>{
+
+container.innerHTML += `
+
+<div class="product-card">
+
+<img src="${product.image}">
+
+<h4>${product.name}</h4>
+
+<p>${product.description || ""}</p>
+
+<div class="price">${product.price} جنيه</div>
+
+<button onclick='addToCart("${product.name}", ${product.price})'>
+
+أضف للسلة
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+function searchProducts(text){
+
+const filtered = products.filter(p =>
+
+p.name.includes(text)
+
+);
+
+displayProducts(filtered);
+
+}
+
+function addToCart(name,price){
+
+cart.push({name,price});
+
+updateCart();
+
+}
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+updateCart();
+
 }
 
 function updateCart(){
-  const cartDiv = document.getElementById("cartItems");
-  cartDiv.innerHTML = "";
-  let total = 0;
 
-  cart.forEach(item=>{
-    total += Number(item.price);
-    cartDiv.innerHTML += `<p>${item.name} - ${item.price} جنيه</p>`;
-  });
+const cartDiv = document.getElementById("cartItems");
 
-  document.getElementById("totalPrice").innerText = "الإجمالي: " + total + " جنيه";
+cartDiv.innerHTML="";
+
+let total = 0;
+
+cart.forEach((item,i)=>{
+
+total += Number(item.price);
+
+cartDiv.innerHTML += `
+
+<div class="cart-item">
+
+<span>${item.name} - ${item.price}</span>
+
+<button class="remove" onclick="removeItem(${i})">X</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("totalPrice").innerText =
+"الإجمالي: " + total + " جنيه";
+
 }
 
 function submitOrder(){
 
-  if(cart.length === 0){
-    alert("السلة فارغة");
-    return;
-  }
+if(cart.length===0){
 
-  document.getElementById("hiddenName").value =
-  document.getElementById("name").value;
+alert("السلة فارغة");
 
-  document.getElementById("hiddenPhone").value =
-  document.getElementById("phone").value;
+return;
 
-  document.getElementById("hiddenAddress").value =
-  document.getElementById("address").value;
+}
 
-  document.getElementById("hiddenCart").value =
-  JSON.stringify(cart);
+document.getElementById("hiddenName").value =
+document.getElementById("name").value;
 
-  document.getElementById("orderForm").submit();
+document.getElementById("hiddenPhone").value =
+document.getElementById("phone").value;
 
-  alert("تم استلام طلبك بنجاح 💖");
+document.getElementById("hiddenAddress").value =
+document.getElementById("address").value;
 
-  cart = [];
-  updateCart();
+document.getElementById("hiddenCart").value =
+JSON.stringify(cart);
+
+document.getElementById("orderForm").submit();
+
+alert("تم استلام طلبك بنجاح 💖");
+
+cart=[];
+
+updateCart();
+
 }
 
 </script>
 
 </body>
-</html>
+  </html>
