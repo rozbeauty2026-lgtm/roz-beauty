@@ -11,7 +11,7 @@
 body{
 font-family:Arial;
 margin:0;
-background:#f2f2f2;
+background:#f5f5f5;
 direction:rtl;
 }
 
@@ -21,60 +21,9 @@ header{
 background:#8e244d;
 color:white;
 padding:15px;
-font-size:22px;
 text-align:center;
+font-size:22px;
 font-weight:bold;
-}
-
-/* البانر */
-
-.banner{
-background:url("https://i.imgur.com/1qKQZ4F.jpg");
-height:150px;
-background-size:cover;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:24px;
-font-weight:bold;
-}
-
-/* الأقسام */
-
-.categories{
-display:flex;
-overflow-x:auto;
-background:white;
-padding:10px;
-gap:10px;
-}
-
-.categories button{
-background:#eee;
-border:none;
-padding:8px 15px;
-border-radius:20px;
-cursor:pointer;
-}
-
-.categories button:hover{
-background:#8e244d;
-color:white;
-}
-
-/* البحث */
-
-.searchBox{
-padding:10px;
-background:white;
-}
-
-.searchBox input{
-width:100%;
-padding:10px;
-border-radius:10px;
-border:1px solid #ddd;
 }
 
 /* المنتجات */
@@ -86,7 +35,7 @@ gap:15px;
 padding:15px;
 }
 
-.product-card{
+.product{
 background:white;
 border-radius:12px;
 padding:10px;
@@ -94,49 +43,56 @@ box-shadow:0 3px 8px rgba(0,0,0,0.1);
 text-align:center;
 }
 
-.product-card img{
+.product img{
 width:100%;
 height:150px;
 object-fit:cover;
 border-radius:10px;
+cursor:pointer;
 }
 
 .price{
 color:#8e244d;
 font-weight:bold;
-margin-top:5px;
+}
+
+.rating{
+color:gold;
+font-size:14px;
 }
 
 button{
 background:#8e244d;
 color:white;
 border:none;
-padding:8px 12px;
+padding:8px 10px;
 border-radius:8px;
-margin-top:8px;
+margin-top:5px;
 cursor:pointer;
+}
+
+/* الكمية */
+
+.qty{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+margin-top:5px;
+}
+
+.qty button{
+width:30px;
 }
 
 /* السلة */
 
-#cartBox{
+#cart{
 background:white;
 margin:15px;
 padding:15px;
 border-radius:12px;
 box-shadow:0 3px 8px rgba(0,0,0,0.1);
-}
-
-.cart-item{
-display:flex;
-justify-content:space-between;
-margin-bottom:6px;
-}
-
-.remove{
-background:red;
-font-size:12px;
-padding:3px 6px;
 }
 
 input{
@@ -154,55 +110,23 @@ border:1px solid #ddd;
 
 <header>Roz Beauty Store 💄</header>
 
-<div class="banner">
-أفضل منتجات العناية بالبشرة
-</div>
-
-<div class="categories">
-
-<button onclick="filterCategory('all')">الكل</button>
-
-<button onclick="filterCategory('عناية بالبشرة')">
-العناية بالبشرة
-</button>
-
-<button onclick="filterCategory('الشعر')">
-الشعر
-</button>
-
-<button onclick="filterCategory('مكياج')">
-المكياج
-</button>
-
-<button onclick="filterCategory('اكسسوارات')">
-اكسسوارات
-</button>
-
-</div>
-
-<div class="searchBox">
-<input type="text" placeholder="ابحث عن منتج..." onkeyup="searchProducts(this.value)">
-</div>
-
 <div id="products"></div>
 
-<div id="cartBox">
+<div id="cart">
 
 <h3>السلة 🛒</h3>
 
 <div id="cartItems"></div>
 
-<p id="totalPrice"></p>
+<p id="total"></p>
 
-<h4>معلومات الطلب</h4>
+<input id="name" placeholder="الاسم">
 
-<input type="text" id="name" placeholder="الاسم">
+<input id="phone" placeholder="رقم الهاتف">
 
-<input type="text" id="phone" placeholder="رقم الهاتف">
+<input id="address" placeholder="العنوان">
 
-<input type="text" id="address" placeholder="العنوان">
-
-<button onclick="submitOrder()">تأكيد الطلب</button>
+<button onclick="sendWhatsApp()">تأكيد الطلب</button>
 
 </div>
 
@@ -217,30 +141,40 @@ fetch(sheetURL)
 .then(res=>res.json())
 .then(data=>{
 products=data;
-displayProducts(products);
+showProducts();
 });
 
-function displayProducts(list){
+function showProducts(){
 
 const container=document.getElementById("products");
 
 container.innerHTML="";
 
-list.forEach(product=>{
+products.forEach((p,i)=>{
 
 container.innerHTML+=`
 
-<div class="product-card">
+<div class="product">
 
-<img src="${product.image}">
+<img src="${p.image}" onclick="viewImage('${p.image}')">
 
-<h4>${product.name}</h4>
+<h4>${p.name}</h4>
 
-<p>${product.description||""}</p>
+<div class="rating">⭐⭐⭐⭐⭐</div>
 
-<div class="price">${product.price} جنيه</div>
+<p class="price">${p.price} جنيه</p>
 
-<button onclick='addToCart("${product.name}",${product.price})'>
+<div class="qty">
+
+<button onclick="minus(${i})">-</button>
+
+<span id="q${i}">1</span>
+
+<button onclick="plus(${i})">+</button>
+
+</div>
+
+<button onclick="addCart(${i})">
 أضف للسلة
 </button>
 
@@ -252,42 +186,35 @@ container.innerHTML+=`
 
 }
 
-function searchProducts(text){
+let qty=[];
 
-const filtered=products.filter(p=>
-p.name.includes(text)
-);
+function plus(i){
 
-displayProducts(filtered);
+qty[i]=(qty[i]||1)+1;
 
-}
-
-function filterCategory(cat){
-
-if(cat==="all"){
-displayProducts(products);
-return;
-}
-
-const filtered=products.filter(p=>
-p.category===cat
-);
-
-displayProducts(filtered);
+document.getElementById("q"+i).innerText=qty[i];
 
 }
 
-function addToCart(name,price){
+function minus(i){
 
-cart.push({name,price});
+qty[i]=(qty[i]||1);
 
-updateCart();
+if(qty[i]>1) qty[i]--;
+
+document.getElementById("q"+i).innerText=qty[i];
 
 }
 
-function removeItem(index){
+function addCart(i){
 
-cart.splice(index,1);
+let q=qty[i]||1;
+
+cart.push({
+name:products[i].name,
+price:products[i].price,
+qty:q
+});
 
 updateCart();
 
@@ -295,54 +222,61 @@ updateCart();
 
 function updateCart(){
 
-const cartDiv=document.getElementById("cartItems");
+let div=document.getElementById("cartItems");
 
-cartDiv.innerHTML="";
+div.innerHTML="";
 
 let total=0;
 
-cart.forEach((item,i)=>{
+cart.forEach(c=>{
 
-total+=Number(item.price);
+total+=c.price*c.qty;
 
-cartDiv.innerHTML+=`
-
-<div class="cart-item">
-
-<span>${item.name} - ${item.price}</span>
-
-<button class="remove" onclick="removeItem(${i})">X</button>
-
-</div>
-
+div.innerHTML+=`
+<p>${c.name} × ${c.qty}</p>
 `;
 
 });
 
-document.getElementById("totalPrice").innerText=
-"الإجمالي: "+total+" جنيه";
+document.getElementById("total").innerText="الإجمالي: "+total+" جنيه";
 
 }
 
-function submitOrder(){
+function viewImage(img){
 
-if(cart.length===0){
-
-alert("السلة فارغة");
-
-return;
+window.open(img);
 
 }
 
-alert("تم استلام طلبك بنجاح 💖");
+function sendWhatsApp(){
 
-cart=[];
+let name=document.getElementById("name").value;
 
-updateCart();
+let phone=document.getElementById("phone").value;
+
+let address=document.getElementById("address").value;
+
+let text="طلب جديد من متجر Roz Beauty%0A";
+
+cart.forEach(c=>{
+
+text+=c.name+" × "+c.qty+"%0A";
+
+});
+
+text+="%0Aالاسم: "+name;
+
+text+="%0Aالهاتف: "+phone;
+
+text+="%0Aالعنوان: "+address;
+
+window.open(
+"https://wa.me/249111311358?text="+text
+);
 
 }
 
 </script>
 
 </body>
-  </html>
+</html>
