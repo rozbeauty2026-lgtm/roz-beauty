@@ -9,11 +9,13 @@
 <style>
 
 body{
-font-family: Arial;
+font-family:Arial;
 margin:0;
 background:#f2f2f2;
 direction:rtl;
 }
+
+/* الهيدر */
 
 header{
 background:#8e244d;
@@ -23,6 +25,45 @@ font-size:22px;
 text-align:center;
 font-weight:bold;
 }
+
+/* البانر */
+
+.banner{
+background:url("https://i.imgur.com/1qKQZ4F.jpg");
+height:150px;
+background-size:cover;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:24px;
+font-weight:bold;
+}
+
+/* الأقسام */
+
+.categories{
+display:flex;
+overflow-x:auto;
+background:white;
+padding:10px;
+gap:10px;
+}
+
+.categories button{
+background:#eee;
+border:none;
+padding:8px 15px;
+border-radius:20px;
+cursor:pointer;
+}
+
+.categories button:hover{
+background:#8e244d;
+color:white;
+}
+
+/* البحث */
 
 .searchBox{
 padding:10px;
@@ -35,6 +76,8 @@ padding:10px;
 border-radius:10px;
 border:1px solid #ddd;
 }
+
+/* المنتجات */
 
 #products{
 display:grid;
@@ -49,11 +92,6 @@ border-radius:12px;
 padding:10px;
 box-shadow:0 3px 8px rgba(0,0,0,0.1);
 text-align:center;
-transition:0.3s;
-}
-
-.product-card:hover{
-transform:scale(1.03);
 }
 
 .product-card img{
@@ -79,9 +117,7 @@ margin-top:8px;
 cursor:pointer;
 }
 
-button:hover{
-opacity:0.9;
-}
+/* السلة */
 
 #cartBox{
 background:white;
@@ -99,8 +135,8 @@ margin-bottom:6px;
 
 .remove{
 background:red;
-padding:3px 7px;
 font-size:12px;
+padding:3px 6px;
 }
 
 input{
@@ -111,20 +147,38 @@ border-radius:8px;
 border:1px solid #ddd;
 }
 
-.checkout{
-margin-top:10px;
-width:100%;
-font-size:16px;
-}
-
 </style>
 </head>
 
 <body>
 
-<header>
-Roz Beauty Store 💄
-</header>
+<header>Roz Beauty Store 💄</header>
+
+<div class="banner">
+أفضل منتجات العناية بالبشرة
+</div>
+
+<div class="categories">
+
+<button onclick="filterCategory('all')">الكل</button>
+
+<button onclick="filterCategory('عناية بالبشرة')">
+العناية بالبشرة
+</button>
+
+<button onclick="filterCategory('الشعر')">
+الشعر
+</button>
+
+<button onclick="filterCategory('مكياج')">
+المكياج
+</button>
+
+<button onclick="filterCategory('اكسسوارات')">
+اكسسوارات
+</button>
+
+</div>
 
 <div class="searchBox">
 <input type="text" placeholder="ابحث عن منتج..." onkeyup="searchProducts(this.value)">
@@ -148,50 +202,33 @@ Roz Beauty Store 💄
 
 <input type="text" id="address" placeholder="العنوان">
 
-<button class="checkout" onclick="submitOrder()">تأكيد الطلب</button>
+<button onclick="submitOrder()">تأكيد الطلب</button>
 
 </div>
 
-<form id="orderForm" method="POST"
-action="https://script.google.com/macros/s/AKfycbyUu-xe6ccYKtfKb5SbgnYlJsTZiunn1m9nrhsv65RESoSOIQtVleLm6weeK0EyVwoF/exec"
-target="hidden_iframe">
-
-<input type="hidden" name="name" id="hiddenName">
-<input type="hidden" name="phone" id="hiddenPhone">
-<input type="hidden" name="address" id="hiddenAddress">
-<input type="hidden" name="cart" id="hiddenCart">
-
-</form>
-
-<iframe name="hidden_iframe" style="display:none;"></iframe>
-
 <script>
 
-const sheetURL =
-"https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
+const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 
-let products = [];
-let cart = [];
+let products=[];
+let cart=[];
 
 fetch(sheetURL)
-.then(res => res.json())
-.then(data => {
-
-products = data;
-
+.then(res=>res.json())
+.then(data=>{
+products=data;
 displayProducts(products);
-
 });
 
 function displayProducts(list){
 
-const container = document.getElementById("products");
+const container=document.getElementById("products");
 
-container.innerHTML = "";
+container.innerHTML="";
 
 list.forEach(product=>{
 
-container.innerHTML += `
+container.innerHTML+=`
 
 <div class="product-card">
 
@@ -199,14 +236,12 @@ container.innerHTML += `
 
 <h4>${product.name}</h4>
 
-<p>${product.description || ""}</p>
+<p>${product.description||""}</p>
 
 <div class="price">${product.price} جنيه</div>
 
-<button onclick='addToCart("${product.name}", ${product.price})'>
-
+<button onclick='addToCart("${product.name}",${product.price})'>
 أضف للسلة
-
 </button>
 
 </div>
@@ -219,10 +254,23 @@ container.innerHTML += `
 
 function searchProducts(text){
 
-const filtered = products.filter(p =>
-
+const filtered=products.filter(p=>
 p.name.includes(text)
+);
 
+displayProducts(filtered);
+
+}
+
+function filterCategory(cat){
+
+if(cat==="all"){
+displayProducts(products);
+return;
+}
+
+const filtered=products.filter(p=>
+p.category===cat
 );
 
 displayProducts(filtered);
@@ -247,17 +295,17 @@ updateCart();
 
 function updateCart(){
 
-const cartDiv = document.getElementById("cartItems");
+const cartDiv=document.getElementById("cartItems");
 
 cartDiv.innerHTML="";
 
-let total = 0;
+let total=0;
 
 cart.forEach((item,i)=>{
 
-total += Number(item.price);
+total+=Number(item.price);
 
-cartDiv.innerHTML += `
+cartDiv.innerHTML+=`
 
 <div class="cart-item">
 
@@ -271,8 +319,8 @@ cartDiv.innerHTML += `
 
 });
 
-document.getElementById("totalPrice").innerText =
-"الإجمالي: " + total + " جنيه";
+document.getElementById("totalPrice").innerText=
+"الإجمالي: "+total+" جنيه";
 
 }
 
@@ -285,20 +333,6 @@ alert("السلة فارغة");
 return;
 
 }
-
-document.getElementById("hiddenName").value =
-document.getElementById("name").value;
-
-document.getElementById("hiddenPhone").value =
-document.getElementById("phone").value;
-
-document.getElementById("hiddenAddress").value =
-document.getElementById("address").value;
-
-document.getElementById("hiddenCart").value =
-JSON.stringify(cart);
-
-document.getElementById("orderForm").submit();
 
 alert("تم استلام طلبك بنجاح 💖");
 
