@@ -1,54 +1,111 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Roz Beauty</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 
 body{
-font-family:Arial;
 margin:0;
+font-family:'Cairo',sans-serif;
 background:#f5f5f5;
 direction:rtl;
 }
 
-/* الهيدر */
+/* Navbar */
 
-header{
-background:#8e244d;
-color:white;
-padding:15px;
-text-align:center;
-font-size:22px;
+.navbar{
+background:white;
+padding:12px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.logo{
+font-size:20px;
 font-weight:bold;
+color:#8e244d;
+}
+
+.cart{
+font-size:20px;
+}
+
+/* بانر */
+
+.banner{
+height:180px;
+background:url("https://i.imgur.com/1qKQZ4F.jpg");
+background-size:cover;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:28px;
+font-weight:bold;
+}
+
+/* الأقسام */
+
+.categories{
+display:flex;
+gap:10px;
+padding:15px;
+overflow:auto;
+}
+
+.cat{
+background:white;
+padding:8px 15px;
+border-radius:20px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
 /* المنتجات */
 
-#products{
+.products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
 gap:15px;
 padding:15px;
 }
 
 .product{
 background:white;
-border-radius:12px;
-padding:10px;
-box-shadow:0 3px 8px rgba(0,0,0,0.1);
-text-align:center;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 5px 12px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.product:hover{
+transform:translateY(-5px);
 }
 
 .product img{
 width:100%;
-height:150px;
+height:170px;
 object-fit:cover;
-border-radius:10px;
-cursor:pointer;
+}
+
+.info{
+padding:10px;
+}
+
+.name{
+font-size:14px;
+margin-bottom:5px;
 }
 
 .price{
@@ -56,127 +113,73 @@ color:#8e244d;
 font-weight:bold;
 }
 
-.rating{
-color:gold;
-font-size:14px;
-}
-
 button{
+width:100%;
+margin-top:8px;
+padding:8px;
+border:none;
 background:#8e244d;
 color:white;
-border:none;
-padding:8px 10px;
 border-radius:8px;
-margin-top:5px;
 cursor:pointer;
 }
 
-/* الكمية */
-
-.qty{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:10px;
-margin-top:5px;
-}
-
-.qty button{
-width:30px;
-}
-
-/* السلة */
-
-#cart{
-background:white;
-margin:15px;
-padding:15px;
-border-radius:12px;
-box-shadow:0 3px 8px rgba(0,0,0,0.1);
-}
-
-input{
-width:100%;
-padding:8px;
-margin-top:6px;
-border-radius:8px;
-border:1px solid #ddd;
-}
-
 </style>
+
 </head>
 
 <body>
 
-<header>Roz Beauty Store 💄</header>
+<div class="navbar">
 
-<div id="products"></div>
+<div class="logo">Roz Beauty</div>
 
-<div id="cart">
-
-<h3>السلة 🛒</h3>
-
-<div id="cartItems"></div>
-
-<p id="total"></p>
-
-<input id="name" placeholder="الاسم">
-
-<input id="phone" placeholder="رقم الهاتف">
-
-<input id="address" placeholder="العنوان">
-
-<button onclick="sendWhatsApp()">تأكيد الطلب</button>
+<div class="cart">🛒</div>
 
 </div>
+
+<div class="banner">
+أفضل منتجات الجمال
+</div>
+
+<div class="categories">
+
+<div class="cat">العناية بالبشرة</div>
+<div class="cat">الشعر</div>
+<div class="cat">المكياج</div>
+<div class="cat">العروض</div>
+
+</div>
+
+<div class="products" id="products"></div>
 
 <script>
 
 const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 
-let products=[];
-let cart=[];
-
 fetch(sheetURL)
 .then(res=>res.json())
 .then(data=>{
-products=data;
-showProducts();
-});
-
-function showProducts(){
 
 const container=document.getElementById("products");
 
-container.innerHTML="";
-
-products.forEach((p,i)=>{
+data.forEach(p=>{
 
 container.innerHTML+=`
 
 <div class="product">
 
-<img src="${p.image}" onclick="viewImage('${p.image}')">
+<img src="${p.image}">
 
-<h4>${p.name}</h4>
+<div class="info">
 
-<div class="rating">⭐⭐⭐⭐⭐</div>
+<div class="name">${p.name}</div>
 
-<p class="price">${p.price} جنيه</p>
+<div class="price">${p.price} جنيه</div>
 
-<div class="qty">
-
-<button onclick="minus(${i})">-</button>
-
-<span id="q${i}">1</span>
-
-<button onclick="plus(${i})">+</button>
+<button>عرض المنتج</button>
 
 </div>
-
-<button onclick="window.location='product.html?name=${p.name}&price=${p.price}&image=${p.image}&desc=${p.description}'">
-عرض المنتج
-</button>
 
 </div>
 
@@ -184,100 +187,10 @@ container.innerHTML+=`
 
 });
 
-}
-
-let qty=[];
-
-function plus(i){
-
-qty[i]=(qty[i]||1)+1;
-
-document.getElementById("q"+i).innerText=qty[i];
-
-}
-
-function minus(i){
-
-qty[i]=(qty[i]||1);
-
-if(qty[i]>1) qty[i]--;
-
-document.getElementById("q"+i).innerText=qty[i];
-
-}
-
-function addCart(i){
-
-let q=qty[i]||1;
-
-cart.push({
-name:products[i].name,
-price:products[i].price,
-qty:q
 });
-
-updateCart();
-
-}
-
-function updateCart(){
-
-let div=document.getElementById("cartItems");
-
-div.innerHTML="";
-
-let total=0;
-
-cart.forEach(c=>{
-
-total+=c.price*c.qty;
-
-div.innerHTML+=`
-<p>${c.name} × ${c.qty}</p>
-`;
-
-});
-
-document.getElementById("total").innerText="الإجمالي: "+total+" جنيه";
-
-}
-
-function viewImage(img){
-
-window.open(img);
-
-}
-
-function sendWhatsApp(){
-
-let name=document.getElementById("name").value;
-
-let phone=document.getElementById("phone").value;
-
-let address=document.getElementById("address").value;
-
-let text="طلب جديد من متجر Roz Beauty%0A";
-
-cart.forEach(c=>{
-
-text+=c.name+" × "+c.qty+"%0A";
-
-});
-
-text+="%0Aالاسم: "+name;
-
-text+="%0Aالهاتف: "+phone;
-
-text+="%0Aالعنوان: "+address;
-
-window.open(
-"https://wa.me/249111311358?text="+text
-);
-
-}
 
 </script>
 
 </body>
-</html>
 
+</html>
