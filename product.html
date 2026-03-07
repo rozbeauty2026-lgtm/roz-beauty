@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Roz Beauty</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f5f5;
+direction:rtl;
+}
+
+header{
+background:#8e244d;
+color:white;
+padding:15px;
+text-align:center;
+font-size:22px;
+}
+
+.container{
+padding:20px;
+}
+
+img{
+width:100%;
+border-radius:12px;
+}
+
+.price{
+color:#8e244d;
+font-size:20px;
+font-weight:bold;
+}
+
+.qty{
+display:flex;
+gap:10px;
+align-items:center;
+margin-top:10px;
+}
+
+button{
+background:#8e244d;
+color:white;
+border:none;
+padding:10px;
+border-radius:8px;
+margin-top:10px;
+width:100%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>Roz Beauty</header>
+
+<div class="container">
+
+<img id="image">
+
+<h2 id="name"></h2>
+
+<p id="desc"></p>
+
+<div class="price" id="price"></div>
+
+<div class="qty">
+
+<button onclick="minus()">-</button>
+
+<span id="qty">1</span>
+
+<button onclick="plus()">+</button>
+
+</div>
+
+<button onclick="buy()">شراء الآن</button>
+
+</div>
+
+<script>
+
+const params=new URLSearchParams(window.location.search);
+
+const name=params.get("name");
+
+const price=params.get("price");
+
+const image=params.get("image");
+
+const desc=params.get("desc");
+
+document.getElementById("name").innerText=name;
+
+document.getElementById("price").innerText=price+" جنيه";
+
+document.getElementById("image").src=image;
+
+document.getElementById("desc").innerText=desc;
+
+let q=1;
+
+function plus(){
+
+q++;
+
+document.getElementById("qty").innerText=q;
+
+}
+
+function minus(){
+
+if(q>1){
+
+q--;
+
+document.getElementById("qty").innerText=q;
+
+}
+
+}
+
+function buy(){
+
+let text="طلب منتج من متجر Roz Beauty %0A";
+
+text+=name+" × "+q+"%0A";
+
+window.open(
+
+"https://wa.me/249111311358?text="+text
+
+);
+
+}
+
+</script>
+
+</body>
+
+  </html>
