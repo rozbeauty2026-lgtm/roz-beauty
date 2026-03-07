@@ -174,8 +174,8 @@ container.innerHTML+=`
 
 </div>
 
-<button onclick="addCart(${i})">
-أضف للسلة
+<button onclick="window.location='product.html?name=${p.name}&price=${p.price}&image=${p.image}&desc=${p.description}'">
+عرض المنتج
 </button>
 
 </div>
@@ -280,3 +280,4 @@ window.open(
 
 </body>
 </html>
+
