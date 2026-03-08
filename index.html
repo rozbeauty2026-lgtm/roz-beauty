@@ -190,7 +190,34 @@ container.innerHTML+=`
 });
 
 </script>
+<form id="orderForm">
+<input type="text" id="name" placeholder="الاسم" required>
+<input type="text" id="phone" placeholder="رقم الهاتف" required>
+<input type="text" id="address" placeholder="العنوان" required>
+<button type="submit">إرسال الطلب</button>
+</form>
 
+<script>
+document.getElementById("orderForm").addEventListener("submit", function(e){
+e.preventDefault();
+
+let data = {
+name: document.getElementById("name").value,
+phone: document.getElementById("phone").value,
+address: document.getElementById("address").value
+};
+
+fetch("https://script.google.com/macros/s/AKfycbx2Vonr07kkY_BfoGbAunz_kHy0qAKGuoLADXer7LJ5963hpR62efGD-KHjdUA92acT/exec",{
+method:"POST",
+body:JSON.stringify(data)
+})
+.then(res=>res.text())
+.then(res=>{
+alert("تم إرسال الطلب");
+});
+});
+</script>
 </body>
 
 </html
+
