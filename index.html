@@ -139,6 +139,7 @@ input{
 </div>
 
 <script>
+// رابط الشيت للمنتجات
 const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 
 let cart = [];
@@ -177,6 +178,7 @@ function updateCart(){
   document.getElementById("totalPrice").innerText = "الإجمالي: " + total + " جنيه";
 }
 
+// الزر النهائي لإرسال الطلب مباشرة للفورم
 function submitOrder() {
   if(cart.length===0){
     alert("السلة فارغة");
@@ -189,7 +191,7 @@ function submitOrder() {
   let items = cart.map(i => i.name + " × " + i.quantity).join(" | ");
   let total = cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
 
-  // رابط Google Form Prefill (انسخي الرابط الخاص بفورمك هنا)
+  // الرابط النهائي للفورم مع Prefill الحقول
   let formURL="https://docs.google.com/forms/d/e/1FAIpQLSerKZLdqtQ2iIm8-4aWsRnp0rn8gNPaYn4LbwF5GHrTzcGYig/formResponse?usp=pp_url&entry.123456789=NAME&entry.987654321=PHONE&entry.111213141=ADDRESS&entry.151617181=ITEMS&entry.192021222=TOTAL";
 
   formURL=formURL
@@ -200,6 +202,7 @@ function submitOrder() {
     .replace("TOTAL", encodeURIComponent(total));
 
   window.open(formURL,"_blank");
+
   cart=[];
   updateCart();
   alert("تم إرسال الطلب بنجاح 💖");
@@ -207,4 +210,4 @@ function submitOrder() {
 </script>
 
 </body>
-  </html>
+</html>
