@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roz Beauty</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-
 <style>
 body{
   margin:0;
@@ -32,7 +30,6 @@ body{
 }
 .cart{
   font-size:20px;
-  cursor:pointer;
 }
 .banner{
   height:180px;
@@ -56,7 +53,6 @@ body{
   padding:8px 15px;
   border-radius:20px;
   box-shadow:0 2px 5px rgba(0,0,0,0.1);
-  cursor:pointer;
 }
 .products{
   display:grid;
@@ -107,9 +103,6 @@ button{
   border-radius:12px;
   box-shadow:0 3px 8px rgba(0,0,0,0.1);
 }
-#cartItems p{
-  margin:5px 0;
-}
 input{
   width:90%;
   padding:8px;
@@ -117,23 +110,20 @@ input{
 }
 </style>
 </head>
-
 <body>
 
 <div class="navbar">
   <div class="logo">Roz Beauty</div>
-  <div class="cart">🛒 السلة</div>
+  <div class="cart">🛒</div>
 </div>
 
-<div class="banner">
-أفضل منتجات الجمال
-</div>
+<div class="banner">أفضل منتجات الجمال</div>
 
 <div class="categories">
-  <div class="cat" onclick="filterCategory('العناية بالبشرة')">العناية بالبشرة</div>
-  <div class="cat" onclick="filterCategory('الشعر')">الشعر</div>
-  <div class="cat" onclick="filterCategory('المكياج')">المكياج</div>
-  <div class="cat" onclick="filterCategory('العروض')">العروض</div>
+  <div class="cat">العناية بالبشرة</div>
+  <div class="cat">الشعر</div>
+  <div class="cat">المكياج</div>
+  <div class="cat">العروض</div>
 </div>
 
 <div class="products" id="products"></div>
@@ -141,32 +131,23 @@ input{
 <div id="cartBox">
 <h3>السلة 🛒</h3>
 <div id="cartItems"></div>
-<p><strong id="totalPrice">الإجمالي: 0 جنيه</strong></p>
-<input type="text" id="name" placeholder="الاسم">
-<input type="text" id="phone" placeholder="رقم الهاتف">
-<input type="text" id="address" placeholder="العنوان">
-<button id="submitOrderBtn">تأكيد الطلب</button>
+<p><strong id="totalPrice"></strong></p>
+<input type="text" id="name" placeholder="الاسم" required>
+<input type="text" id="phone" placeholder="رقم الهاتف" required>
+<input type="text" id="address" placeholder="العنوان" required>
+<button onclick="submitOrder()">تأكيد الطلب</button>
 </div>
 
 <script>
-// رابط Google Sheet للمنتجات
 const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 
-let allProducts = [];
 let cart = [];
 
-// تحميل المنتجات
 fetch(sheetURL)
 .then(res=>res.json())
 .then(data=>{
-  allProducts = data;
-  displayProducts(allProducts);
-});
-
-function displayProducts(products){
-  const container = document.getElementById("products");
-  container.innerHTML="";
-  products.forEach(p=>{
+  const container=document.getElementById("products");
+  data.forEach(p=>{
     container.innerHTML+=`
       <div class="product">
         <img src="${p.image}">
@@ -178,82 +159,52 @@ function displayProducts(products){
       </div>
     `;
   });
-}
+});
 
-function filterCategory(cat){
-  const filtered = allProducts.filter(p=>p.category===cat);
-  displayProducts(filtered);
-}
-
-// إضافة للسلة
 function addToCart(name, price){
-  let found = cart.find(item => item.name===name);
-  if(found){ found.qty++; } else { cart.push({name, price:Number(price), qty:1}); }
+  cart.push({name, price, quantity:1});
   updateCart();
 }
 
-// تحديث السلة
 function updateCart(){
-  const cartDiv = document.getElementById("cartItems");
+  const cartDiv=document.getElementById("cartItems");
   cartDiv.innerHTML="";
-  let total = 0;
+  let total=0;
   cart.forEach(item=>{
-    total += item.price*item.qty;
-    cartDiv.innerHTML+=`<p>${item.name} × ${item.qty} = ${item.price*item.qty} جنيه</p>`;
+    total += Number(item.price*item.quantity);
+    cartDiv.innerHTML += `<p>${item.name} × ${item.quantity} - ${item.price*item.quantity} جنيه</p>`;
   });
-  document.getElementById("totalPrice").innerText = "الإجمالي: "+total+" جنيه";
+  document.getElementById("totalPrice").innerText = "الإجمالي: " + total + " جنيه";
 }
 
-// تأكيد الطلب وإرساله إلى Google Sheet
-document.getElementById("submitOrderBtn").addEventListener("click", function(){
+function submitOrder() {
+  if(cart.length===0){
+    alert("السلة فارغة");
+    return;
+  }
+
   const name = document.getElementById("name").value;
   const phone = document.getElementById("phone").value;
   const address = document.getElementById("address").value;
+  let items = cart.map(i => i.name + " × " + i.quantity).join(" | ");
+  let total = cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
 
-  if(!name || !phone || !address){
-    alert("يرجى تعبئة جميع البيانات ✍️");
-    return;
-  }
-  if(cart.length===0){
-    alert("السلة فارغة 🛒");
-    return;
-  }
+  // رابط Google Form Prefill (انسخي الرابط الخاص بفورمك هنا)
+  let formURL="https://docs.google.com/forms/d/e/1FAIpQLSerKZLdqtQ2iIm8-4aWsRnp0rn8gNPaYn4LbwF5GHrTzcGYig/formResponse?usp=pp_url&entry.123456789=NAME&entry.987654321=PHONE&entry.111213141=ADDRESS&entry.151617181=ITEMS&entry.192021222=TOTAL";
 
-  let orderItems="";
-  let total=0;
-  cart.forEach(item=>{
-    orderItems+=item.name+" × "+item.qty+" | ";
-    total+=item.price*item.qty;
-  });
+  formURL=formURL
+    .replace("NAME", encodeURIComponent(name))
+    .replace("PHONE", encodeURIComponent(phone))
+    .replace("ADDRESS", encodeURIComponent(address))
+    .replace("ITEMS", encodeURIComponent(items))
+    .replace("TOTAL", encodeURIComponent(total));
 
-  const orderData = {
-    order_id:"ORD"+Date.now(),
-    name,
-    phone,
-    address,
-    items:orderItems,
-    total,
-    date:new Date().toLocaleString()
-  };
-
-  fetch("https://script.google.com/macros/s/AKfycbx2Vonr07kkY_BfoGbAunz_kHy0qAKGuoLADXer7LJ5963hpR62efGD-KHjdUA92acT/exec", {
-    method:"POST",
-    body:JSON.stringify(orderData)
-  })
-  .then(()=>{ 
-    alert("تم استلام طلبك بنجاح 💖");
-    cart.length=0;
-    updateCart();
-    document.getElementById("name").value="";
-    document.getElementById("phone").value="";
-    document.getElementById("address").value="";
-  })
-  .catch(err=>{
-    console.error(err);
-    alert("حدث خطأ أثناء إرسال الطلب");
-  });
-});
+  window.open(formURL,"_blank");
+  cart=[];
+  updateCart();
+  alert("تم إرسال الطلب بنجاح 💖");
+}
 </script>
 
 </body>
-</html>
+  </html>
