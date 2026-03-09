@@ -149,11 +149,13 @@ input{
 </div>
 
 <script>
+// رابط Google Sheet للمنتجات
 const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
+
 let allProducts = [];
 let cart = [];
 
-// تحميل المنتجات من Google Sheet
+// تحميل المنتجات
 fetch(sheetURL)
 .then(res=>res.json())
 .then(data=>{
@@ -202,7 +204,7 @@ function updateCart(){
   document.getElementById("totalPrice").innerText = "الإجمالي: "+total+" جنيه";
 }
 
-// تأكيد الطلب وإرساله لـ Google Sheet
+// تأكيد الطلب وإرساله إلى Google Sheet
 document.getElementById("submitOrderBtn").addEventListener("click", function(){
   const name = document.getElementById("name").value;
   const phone = document.getElementById("phone").value;
