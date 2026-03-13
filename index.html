@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +8,12 @@
 body{
   margin:0;
   font-family:'Cairo',sans-serif;
-  background:#fdf4f7;
+  background:#f5f5f5;
   direction:rtl;
 }
 /* Navbar */
 .navbar{
-  background:#fff;
+  background:white;
   padding:12px 20px;
   display:flex;
   justify-content:space-between;
@@ -25,62 +24,52 @@ body{
   z-index:100;
 }
 .logo{
-  font-size:22px;
+  font-size:20px;
   font-weight:bold;
-  color:#d6336c;
+  color:#8e244d;
 }
 .cart{
   font-size:20px;
   cursor:pointer;
-  position:relative;
-}
-.cart span{
-  background:#d6336c;
-  color:white;
-  border-radius:50%;
-  padding:2px 6px;
-  font-size:12px;
-  position:absolute;
-  top:-8px;
-  right:-10px;
 }
 /* Banner */
 .banner{
   height:220px;
-  background:url("https://i.imgur.com/1qKQZ4F.jpg") center/cover no-repeat;
+  background:url('https://i.imgur.com/Zq9z1pK.jpg') center/cover no-repeat;
   display:flex;
   align-items:center;
   justify-content:center;
   color:white;
-  font-size:32px;
+  font-size:28px;
   font-weight:bold;
-  text-shadow:1px 1px 4px rgba(0,0,0,0.6);
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 /* Categories */
 .categories{
   display:flex;
-  gap:12px;
+  gap:10px;
   padding:15px;
-  overflow-x:auto;
+  overflow:auto;
 }
 .cat{
   background:white;
-  padding:10px 20px;
-  border-radius:25px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  padding:8px 15px;
+  border-radius:20px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
   cursor:pointer;
-  white-space:nowrap;
-  font-weight:bold;
   transition:0.3s;
 }
 .cat:hover{
-  background:#d6336c;
+  transform:translateY(-3px);
+  background:#8e244d;
   color:white;
 }
 /* Products */
 .products{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
   gap:15px;
   padding:15px;
 }
@@ -88,95 +77,68 @@ body{
   background:white;
   border-radius:15px;
   overflow:hidden;
-  box-shadow:0 5px 15px rgba(0,0,0,0.08);
+  box-shadow:0 5px 12px rgba(0,0,0,0.08);
   transition:0.3s;
 }
 .product:hover{
   transform:translateY(-5px);
-  box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 .product img{
   width:100%;
-  height:180px;
+  height:170px;
   object-fit:cover;
 }
 .info{
   padding:10px;
 }
 .name{
-  font-size:15px;
+  font-size:14px;
   margin-bottom:5px;
-  font-weight:bold;
 }
 .price{
-  color:#d6336c;
+  color:#8e244d;
   font-weight:bold;
-  font-size:14px;
 }
 button{
   width:100%;
   margin-top:8px;
   padding:8px;
   border:none;
-  background:#d6336c;
+  background:#8e244d;
   color:white;
-  border-radius:10px;
+  border-radius:8px;
   cursor:pointer;
-  font-weight:bold;
   transition:0.3s;
 }
 button:hover{
-  background:#a82b55;
+  background:#b33668;
 }
 /* Cart */
 #cartBox{
   background:white;
   margin:20px;
   padding:15px;
-  border-radius:15px;
-  box-shadow:0 3px 12px rgba(0,0,0,0.1);
-}
-#cartBox h3{
-  margin-top:0;
-  color:#d6336c;
-}
-#cartItems p{
-  margin:5px 0;
-  font-weight:bold;
+  border-radius:12px;
+  box-shadow:0 3px 8px rgba(0,0,0,0.1);
 }
 input{
-  width:95%;
-  padding:10px;
+  width:90%;
+  padding:8px;
   margin:6px 0;
-  border:1px solid #ccc;
+  border:1px solid #ddd;
   border-radius:8px;
-}
-input:focus{
-  outline:none;
-  border-color:#d6336c;
-  box-shadow:0 0 5px rgba(214,51,108,0.4);
 }
 </style>
 </head>
-<body>
-
-<div class="navbar">
+<body><div class="navbar">
   <div class="logo">Roz Beauty</div>
   <div class="cart">🛒 <span id="cartCount">0</span></div>
-</div>
-
-<div class="banner">أفضل منتجات الجمال</div>
-
-<div class="categories">
+</div><div class="banner">أفضل منتجات الجمال</div><div class="categories">
   <div class="cat">العناية بالبشرة</div>
   <div class="cat">الشعر</div>
   <div class="cat">المكياج</div>
   <div class="cat">العروض</div>
-</div>
-
-<div class="products" id="products"></div>
-
-<div id="cartBox">
+</div><div class="products" id="products"></div><div id="cartBox">
   <h3>السلة 🛒</h3>
   <div id="cartItems"></div>
   <p><strong id="totalPrice"></strong></p>
@@ -184,13 +146,10 @@ input:focus{
   <input type="text" id="phone" placeholder="رقم الهاتف" required>
   <input type="text" id="address" placeholder="العنوان" required>
   <button onclick="submitOrder()">تأكيد الطلب</button>
-</div>
-
-<script>
+</div><script>
 const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 let cart=[];
 
-// جلب المنتجات من Google Sheet
 fetch(sheetURL)
 .then(res=>res.json())
 .then(data=>{
@@ -208,13 +167,11 @@ fetch(sheetURL)
   });
 });
 
-// إضافة منتج للسلة
 function addToCart(name, price){
   cart.push({name, price, quantity:1});
   updateCart();
 }
 
-// تحديث عرض السلة
 function updateCart(){
   const cartDiv=document.getElementById("cartItems");
   cartDiv.innerHTML="";
@@ -227,7 +184,6 @@ function updateCart(){
   document.getElementById("cartCount").innerText=cart.length;
 }
 
-// إرسال الطلب إلى Google Sheet
 function submitOrder() {
   if(cart.length===0){
     alert("السلة فارغة");
@@ -259,7 +215,5 @@ function submitOrder() {
     alert("حدث خطأ أثناء إرسال الطلب: "+err);
   });
 }
-</script>
-
-</body>
-       </html>
+</script></body>
+  </html>
