@@ -18,7 +18,7 @@ body{
   z-index:100;
 }
 .logo{
-  font-size:20px;
+  font-size:22px;
   font-weight:bold;
   color:#8e244d;
 }
@@ -28,45 +28,46 @@ body{
 }
 
 /* Banner */
-.banner{
-  margin:10px 15px;
-  border-radius:12px;
-  overflow:hidden;
-}
 .banner img{
   width:100%;
+  height:auto;
   border-radius:12px;
+  margin:10px 0;
 }
 
-/* Categories + Search */
-.categories-container{
-  display:flex;
-  gap:10px;
+/* Search */
+.search-bar{
   padding:10px 15px;
-  overflow:auto;
-  align-items:center;
-  flex-wrap:wrap;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.08);
-  margin:10px 15px;
 }
-.categories-container input#searchInput{
-  flex:1;
-  padding:8px 12px;
+.search-bar input{
+  width:100%;
+  padding:10px;
   border-radius:20px;
   border:1px solid #ddd;
-  font-family:'Cairo',sans-serif;
-  font-size:14px;
-  min-width:120px;
+  font-size:16px;
+}
+
+/* Categories */
+.categories{
+  display:flex;
+  gap:10px;
+  padding:15px;
+  overflow-x:auto;
 }
 .cat{
-  background:#f8f8f8;
-  padding:8px 15px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  background:#fff;
+  padding:8px 12px;
   border-radius:20px;
   box-shadow:0 2px 5px rgba(0,0,0,0.1);
   cursor:pointer;
-  white-space:nowrap;
+  flex-shrink:0;
+}
+.cat img{
+  width:24px;
+  height:24px;
 }
 
 /* Products */
@@ -102,7 +103,7 @@ body{
   color:#8e244d;
   font-weight:bold;
 }
-button{
+button.addToCart{
   width:100%;
   margin-top:8px;
   padding:8px;
@@ -116,12 +117,12 @@ button{
 /* Cart */
 #cartBox{
   background:white;
-  margin:20px 15px;
+  margin:20px;
   padding:15px;
   border-radius:12px;
   box-shadow:0 3px 8px rgba(0,0,0,0.1);
 }
-input{
+#cartBox input{
   width:90%;
   padding:8px;
   margin:6px 0;
