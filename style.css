@@ -109,3 +109,14 @@ font-weight:bold;
 color:#8e244d;
 text-align:center;
   }
+.searchBox{
+padding:15px;
+}
+
+.searchBox input{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:1px solid #ddd;
+font-family:'Cairo',sans-serif;
+  }
