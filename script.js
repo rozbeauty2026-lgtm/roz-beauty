@@ -169,3 +169,14 @@ function submitOrder(){
     });
 
       }
+function searchProducts(){
+
+let input = document.getElementById("searchInput").value.toLowerCase();
+
+let filtered = allProducts.filter(p =>
+p.name.toLowerCase().includes(input)
+);
+
+showProducts(filtered);
+
+              }
