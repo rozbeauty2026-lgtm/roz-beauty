@@ -78,3 +78,34 @@ border-radius:8px;
 margin-top:8px;
 cursor:pointer;
 }
+.categories{
+display:flex;
+gap:12px;
+padding:15px;
+overflow-x:auto;
+}
+
+.cat{
+display:flex;
+flex-direction:column;
+align-items:center;
+background:white;
+padding:10px;
+border-radius:15px;
+box-shadow:0 3px 8px rgba(0,0,0,0.1);
+min-width:90px;
+cursor:pointer;
+}
+
+.cat img{
+width:45px;
+height:45px;
+margin-bottom:5px;
+}
+
+.cat span{
+font-size:13px;
+font-weight:bold;
+color:#8e244d;
+text-align:center;
+  }
