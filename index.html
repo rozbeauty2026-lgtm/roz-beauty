@@ -4,183 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roz Beauty</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-
 <style>
+body{margin:0;font-family:'Cairo',sans-serif;background:#f5f5f5;direction:rtl;}
+.navbar{background:white;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);position:sticky;top:0;z-index:100;}
+.logo{font-size:22px;font-weight:bold;color:#8e244d;}
+.cart{font-size:20px;cursor:pointer;}
+.banner{height:180px;background:url("https://i.imgur.com/n9ZVlX2.png");background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:white;font-size:28px;font-weight:bold;}
+.search-box{padding:15px;}
+.search-box input{width:100%;padding:10px;border-radius:12px;border:1px solid #ccc;font-size:16px;}
+.categories{display:flex;gap:12px;padding:15px;overflow-x:auto;}
+.cat{flex:0 0 auto;background:white;padding:8px;border-radius:12px;box-shadow:0 2px 5px rgba(0,0,0,0.1);cursor:pointer;text-align:center;width:80px;}
+.cat img{width:55px;height:55px;object-fit:cover;border-radius:10px;display:block;margin:auto;}
+.cat span{font-size:12px;display:block;margin-top:5px;}
+.cat.active{background:#8e244d;color:white;}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:15px;padding:15px;}
+.product{background:white;border-radius:15px;overflow:hidden;box-shadow:0 5px 12px rgba(0,0,0,0.08);transition:0.3s;}
+.product:hover{transform:translateY(-5px);}
+.product img{width:100%;height:170px;object-fit:cover;}
+.info{padding:10px;}
+.name{font-size:14px;margin-bottom:5px;}
+.price{color:#8e244d;font-weight:bold;}
+button{width:100%;margin-top:8px;padding:8px;border:none;background:#8e244d;color:white;border-radius:8px;cursor:pointer;}
+#cartBox{background:white;margin:20px;padding:15px;border-radius:12px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
+#cartBox input{width:90%;padding:8px;margin:6px 0;}
 
-body{
-margin:0;
-font-family:'Cairo',sans-serif;
-background:#f5f5f5;
-direction:rtl;
-}
-
-/* Navbar */
-
-.navbar{
-background:white;
-padding:12px 20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
-position:sticky;
-top:0;
-z-index:100;
-}
-
-.logo{
-font-size:20px;
-font-weight:bold;
-color:#8e244d;
-}
-
-.cart{
-font-size:20px;
-cursor:pointer;
-}
-
-/* Banner */
-
-.banner{
-height:180px;
-background:url("https://i.imgur.com/n9ZVlX2.png");
-background-size:cover;
-background-position:center;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:28px;
-font-weight:bold;
-}
-
-/* Search */
-
-.search-box{
-padding:15px;
-}
-
-.search-box input{
-width:100%;
-padding:10px;
-border-radius:12px;
-border:1px solid #ccc;
-font-size:16px;
-}
-
-/* Categories */
-
-.categories{
-display:flex;
-gap:12px;
-padding:15px;
-overflow-x:auto;
-}
-
-.cat{
-flex:0 0 auto;
-background:white;
-padding:8px;
-border-radius:12px;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
-cursor:pointer;
-text-align:center;
-width:80px;
-}
-
-.cat img{
-width:55px;
-height:55px;
-object-fit:cover;
-border-radius:10px;
-display:block;
-margin:auto;
-}
-
-.cat span{
-font-size:12px;
-display:block;
-margin-top:5px;
-}
-
-/* Products */
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-gap:15px;
-padding:15px;
-}
-
-.product{
-background:white;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 5px 12px rgba(0,0,0,0.08);
-transition:0.3s;
-}
-
-.product:hover{
-transform:translateY(-5px);
-}
-
-.product img{
-width:100%;
-height:170px;
-object-fit:cover;
-}
-
-.info{
-padding:10px;
-}
-
-.name{
-font-size:14px;
-margin-bottom:5px;
-}
-
-.price{
-color:#8e244d;
-font-weight:bold;
-}
-
-button{
-width:100%;
-margin-top:8px;
-padding:8px;
-border:none;
-background:#8e244d;
-color:white;
-border-radius:8px;
-cursor:pointer;
-}
-
-/* Cart */
-
-#cartBox{
-background:white;
-margin:20px;
-padding:15px;
-border-radius:12px;
-box-shadow:0 3px 8px rgba(0,0,0,0.1);
-}
-
-input{
-width:90%;
-padding:8px;
-margin:6px 0;
-}
-
+/* Modal */
+.modal{display:none;position:fixed;z-index:200;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.6);}
+.modal-content{background:#fff;margin:10% auto;padding:20px;border-radius:12px;width:90%;max-width:400px;position:relative;}
+.close{position:absolute;top:10px;right:15px;font-size:25px;font-weight:bold;cursor:pointer;}
+.select-box{margin:5px 0;padding:5px;width:100%;border-radius:8px;border:1px solid #ccc;}
+.quantity-box{display:flex;align-items:center;gap:10px;margin:5px 0;}
+.quantity-box button{padding:5px 10px;}
 </style>
 </head>
-
 <body>
 
 <div class="navbar">
-<div class="logo">Roz Beauty</div>
-<div class="cart">🛒 <span id="cartCount">0</span></div>
+  <div class="logo">Roz Beauty</div>
+  <div class="cart">🛒 <span id="cartCount">0</span></div>
 </div>
 
 <div class="banner">أفضل منتجات الجمال</div>
@@ -197,29 +59,39 @@ margin:6px 0;
 <h3>السلة 🛒</h3>
 <div id="cartItems"></div>
 <p><strong id="totalPrice"></strong></p>
-
 <input type="text" id="name" placeholder="الاسم">
 <input type="text" id="phone" placeholder="رقم الهاتف">
 <input type="text" id="address" placeholder="العنوان">
-
 <button onclick="submitOrder()">تأكيد الطلب</button>
+</div>
 
+<!-- Modal -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modalImage" style="width:100%;border-radius:10px;">
+    <h3 id="modalName"></h3>
+    <p id="modalDesc"></p>
+    <p><strong>السعر: </strong><span id="modalPrice"></span> جنيه</p>
+    <div id="colorSelectContainer"></div>
+    <div id="sizeSelectContainer"></div>
+    <div class="quantity-box">
+      <button onclick="decreaseQty()">-</button>
+      <input type="number" id="modalQty" value="1" min="1" style="width:50px;text-align:center;">
+      <button onclick="increaseQty()">+</button>
+    </div>
+    <button onclick="addToCartModal()">أضف للسلة</button>
+  </div>
 </div>
 
 <script>
-
-/* روابط البيانات */
-
 const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 const webAppURL="https://script.google.com/macros/s/AKfycbwJOdPdKK4Kxkwy-MxGNvPSDI8HGcgkCyVMjDtsNAbYZmdHNxgEGJQQQEzUlzTEujv7TA/exec";
+let productsData=[]; let cart=[]; let selectedProduct=null;
 
-let cart=[];
-let productsData=[];
-
-/* الأقسام */
-
+// الأقسام
 const sections=[
-
+{name:"الكل",img:"https://i.imgur.com/n9ZVlX2.png"},
 {name:"العناية بالبشرة",img:"https://i.imgur.com/rb86TWc.jpg"},
 {name:"العناية بالشعر",img:"https://i.imgur.com/19yLtSC.jpg"},
 {name:"المكياج",img:"https://i.imgur.com/E6QEprz.png"},
@@ -227,191 +99,116 @@ const sections=[
 {name:"العروض",img:"https://i.imgur.com/BFBplR8.png"},
 {name:"شنط وملابس",img:"https://i.imgur.com/TS5EgqL.png"},
 {name:"إكسسوارات",img:"https://i.imgur.com/JftwUHq.png"}
-
 ];
-
-/* عرض الأقسام */
-
 const catContainer=document.getElementById("categories");
-
 sections.forEach(cat=>{
-
-const div=document.createElement("div");
-div.className="cat";
-
-div.innerHTML=`<img src="${cat.img}"><span>${cat.name}</span>`;
-
-div.onclick=()=>filterProducts(cat.name);
-
-catContainer.appendChild(div);
-
+  const div=document.createElement("div");
+  div.className="cat";
+  div.innerHTML=`<img src="${cat.img}"><span>${cat.name}</span>`;
+  div.onclick=()=>{document.querySelectorAll(".cat").forEach(el=>el.classList.remove("active"));div.classList.add("active");filterProducts(cat.name);};
+  catContainer.appendChild(div);
 });
 
-/* جلب المنتجات */
-
+// جلب المنتجات
 fetch(sheetURL)
-
 .then(res=>res.json())
+.then(data=>{productsData=data; displayProducts(productsData);});
 
-.then(data=>{
-
-productsData=data;
-
-displayProducts(productsData);
-
-});
-
-/* عرض المنتجات */
-
+// عرض المنتجات
 function displayProducts(list){
-
-const container=document.getElementById("products");
-
-container.innerHTML="";
-
-list.forEach(p=>{
-
-container.innerHTML+=`
-
-<div class="product">
-
-<img src="${p.image}">
-
-<div class="info">
-
-<div class="name">${p.name}</div>
-
-<div class="price">${p.price} جنيه</div>
-
-<button onclick='addToCart("${p.name}",${p.price})'>أضف للسلة</button>
-
-</div>
-
-</div>
-
-`;
-
-});
-
+  const container=document.getElementById("products");
+  container.innerHTML="";
+  list.forEach(p=>{
+    container.innerHTML+=`
+    <div class="product" onclick='openModal(${JSON.stringify(p)})'>
+      <img src="${p.image}">
+      <div class="info">
+        <div class="name">${p.name}</div>
+        <div class="price">${p.price} جنيه</div>
+      </div>
+    </div>`;
+  });
 }
 
-/* فلترة حسب القسم */
-
+// فلترة الأقسام
 function filterProducts(category){
-
-const filtered=productsData.filter(p=>p.Category===category);
-
-displayProducts(filtered);
-
+  if(category==="الكل"){ displayProducts(productsData); return; }
+  const filtered=productsData.filter(p=>p.Category===category);
+  displayProducts(filtered);
 }
 
-/* البحث */
-
+// البحث
 document.getElementById("searchInput").addEventListener("input",e=>{
-
-const query=e.target.value.toLowerCase();
-
-const filtered=productsData.filter(p=>p.name.toLowerCase().includes(query));
-
-displayProducts(filtered);
-
+  const query=e.target.value.toLowerCase();
+  const filtered=productsData.filter(p=>
+    (p.name && p.name.toLowerCase().includes(query)) ||
+    (p.Category && p.Category.toLowerCase().includes(query))
+  );
+  displayProducts(filtered);
 });
 
-/* إضافة للسلة */
-
-function addToCart(name,price){
-
-cart.push({name,price,quantity:1});
-
-updateCart();
-
+// Modal
+function openModal(p){
+  selectedProduct=p;
+  document.getElementById("modalImage").src=p.image;
+  document.getElementById("modalName").innerText=p.name;
+  document.getElementById("modalDesc").innerText=p.description||"";
+  document.getElementById("modalPrice").innerText=p.price;
+  const colorDiv=document.getElementById("colorSelectContainer");
+  const sizeDiv=document.getElementById("sizeSelectContainer");
+  colorDiv.innerHTML=""; sizeDiv.innerHTML="";
+  if(p.colors){ 
+    const colors=p.colors.split(",");
+    colorDiv.innerHTML=`<select id="modalColor" class="select-box"><option value="">اختر اللون</option>`+
+      colors.map(c=>`<option value="${c.trim()}">${c.trim()}</option>`).join('')+`</select>`;
+  }
+  if(p.sizes){
+    const sizes=p.sizes.split(",");
+    sizeDiv.innerHTML=`<select id="modalSize" class="select-box"><option value="">اختر الحجم</option>`+
+      sizes.map(s=>`<option value="${s.trim()}">${s.trim()}</option>`).join('')+`</select>`;
+  }
+  document.getElementById("modalQty").value=1;
+  document.getElementById("productModal").style.display="block";
+}
+function closeModal(){document.getElementById("productModal").style.display="none";}
+function decreaseQty(){const q=document.getElementById("modalQty");if(q.value>1)q.value--;}
+function increaseQty(){const q=document.getElementById("modalQty");if(selectedProduct.stock && q.value<selectedProduct.stock)q.value++;}
+function addToCartModal(){
+  const qty=Number(document.getElementById("modalQty").value);
+  const color=document.getElementById("modalColor")?document.getElementById("modalColor").value:null;
+  const size=document.getElementById("modalSize")?document.getElementById("modalSize").value:null;
+  let name=selectedProduct.name;
+  if(color) name+=" ("+color+")";
+  if(size) name+=" ("+size+")";
+  let item=cart.find(i=>i.name===name);
+  if(item){item.quantity+=qty;} else{cart.push({name,price:selectedProduct.price,quantity:qty});}
+  updateCart();
+  closeModal();
 }
 
-/* تحديث السلة */
-
+// السلة
 function updateCart(){
-
-const cartDiv=document.getElementById("cartItems");
-
-cartDiv.innerHTML="";
-
-let total=0;
-
-cart.forEach(item=>{
-
-total+=Number(item.price)*item.quantity;
-
-cartDiv.innerHTML+=`<p>${item.name} × ${item.quantity} - ${item.price} جنيه</p>`;
-
-});
-
-document.getElementById("totalPrice").innerText="الإجمالي: "+total+" جنيه";
-
-document.getElementById("cartCount").innerText=cart.length;
-
+  const cartDiv=document.getElementById("cartItems"); cartDiv.innerHTML=""; let total=0;
+  cart.forEach(item=>{total+=Number(item.price)*item.quantity; cartDiv.innerHTML+=`<p>${item.name} × ${item.quantity} - ${item.price} جنيه</p>`;});
+  document.getElementById("totalPrice").innerText="الإجمالي: "+total+" جنيه";
+  document.getElementById("cartCount").innerText=cart.length;
 }
 
-/* إرسال الطلب */
-
+// إرسال الطلب
 function submitOrder(){
-
-if(cart.length===0){
-
-alert("السلة فارغة");
-
-return;
-
+  if(cart.length===0){alert("السلة فارغة");return;}
+  const name=document.getElementById("name").value;
+  const phone=document.getElementById("phone").value;
+  const address=document.getElementById("address").value;
+  if(!name||!phone||!address){alert("اكمل البيانات");return;}
+  let items=cart.map(i=>i.name+" × "+i.quantity).join(" | ");
+  let total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+  fetch(webAppURL,{method:"POST",body:JSON.stringify({name,phone,address,items,total})})
+  .then(res=>res.json())
+  .then(res=>{if(res.status==="success"){alert("تم إرسال الطلب بنجاح 💖");cart=[];updateCart();}else{alert("حدث خطأ");}})
+  .catch(err=>alert("حدث خطأ: "+err));
 }
-
-const name=document.getElementById("name").value;
-
-const phone=document.getElementById("phone").value;
-
-const address=document.getElementById("address").value;
-
-let items=cart.map(i=>i.name+" × "+i.quantity).join(" | ");
-
-let total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
-
-fetch(webAppURL,{
-
-method:"POST",
-
-body:JSON.stringify({name,phone,address,items,total})
-
-})
-
-.then(res=>res.json())
-
-.then(res=>{
-
-if(res.status==="success"){
-
-alert("تم إرسال الطلب بنجاح 💖");
-
-cart=[];
-
-updateCart();
-
-}
-
-else{
-
-alert("حدث خطأ");
-
-}
-
-})
-
-.catch(err=>{
-
-alert("خطأ في الاتصال");
-
-});
-
-}
-
 </script>
 
 </body>
-  </html>
+                                     </html>
