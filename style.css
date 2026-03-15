@@ -127,3 +127,7 @@ button.addToCart{
   padding:8px;
   margin:6px 0;
 }
+.cat.active{
+background:#8e244d;
+color:white;
+  }
