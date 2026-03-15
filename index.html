@@ -4,153 +4,189 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roz Beauty</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
+
 body{
-  margin:0;
-  font-family:'Cairo',sans-serif;
-  background:#f5f5f5;
-  direction:rtl;
+margin:0;
+font-family:'Cairo',sans-serif;
+background:#f5f5f5;
+direction:rtl;
 }
+
 /* Navbar */
+
 .navbar{
-  background:white;
-  padding:12px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
-  position:sticky;
-  top:0;
-  z-index:100;
+background:white;
+padding:12px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+position:sticky;
+top:0;
+z-index:100;
 }
+
 .logo{
-  font-size:20px;
-  font-weight:bold;
-  color:#8e244d;
+font-size:20px;
+font-weight:bold;
+color:#8e244d;
 }
+
 .cart{
-  font-size:20px;
-  cursor:pointer;
+font-size:20px;
+cursor:pointer;
 }
+
 /* Banner */
+
 .banner{
-  height:180px;
-  background:url(https://i.imgur.com/n9ZVlX2.png);
-  background-size:cover;
-  background-position:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-size:28px;
-  font-weight:bold;
+height:180px;
+background:url("https://i.imgur.com/n9ZVlX2.png");
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:28px;
+font-weight:bold;
 }
+
 /* Search */
+
 .search-box{
-  padding:15px;
+padding:15px;
 }
+
 .search-box input{
-  width:100%;
-  padding:10px;
-  border-radius:12px;
-  border:1px solid #ccc;
-  font-size:16px;
+width:100%;
+padding:10px;
+border-radius:12px;
+border:1px solid #ccc;
+font-size:16px;
 }
+
 /* Categories */
+
 .categories{
-  display:flex;
-  gap:10px;
-  padding:15px;
-  overflow-x:auto;
+display:flex;
+gap:12px;
+padding:15px;
+overflow-x:auto;
 }
+
 .cat{
-  flex:0 0 auto;
-  background:white;
-  padding:8px 15px;
-  border-radius:20px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
-  cursor:pointer;
-  text-align:center;
+flex:0 0 auto;
+background:white;
+padding:8px;
+border-radius:12px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+cursor:pointer;
+text-align:center;
+width:80px;
 }
+
 .cat img{
-  width:60px;
-  height:60px;
-  object-fit:cover;
-  border-radius:12px;
-  display:block;
-  margin:auto;
-  margin-bottom:5px;
+width:55px;
+height:55px;
+object-fit:cover;
+border-radius:10px;
+display:block;
+margin:auto;
 }
+
+.cat span{
+font-size:12px;
+display:block;
+margin-top:5px;
+}
+
 /* Products */
+
 .products{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-  gap:15px;
-  padding:15px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+gap:15px;
+padding:15px;
 }
+
 .product{
-  background:white;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 5px 12px rgba(0,0,0,0.08);
-  transition:0.3s;
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 5px 12px rgba(0,0,0,0.08);
+transition:0.3s;
 }
+
 .product:hover{
-  transform:translateY(-5px);
+transform:translateY(-5px);
 }
+
 .product img{
-  width:100%;
-  height:170px;
-  object-fit:cover;
+width:100%;
+height:170px;
+object-fit:cover;
 }
+
 .info{
-  padding:10px;
+padding:10px;
 }
+
 .name{
-  font-size:14px;
-  margin-bottom:5px;
+font-size:14px;
+margin-bottom:5px;
 }
+
 .price{
-  color:#8e244d;
-  font-weight:bold;
+color:#8e244d;
+font-weight:bold;
 }
+
 button{
-  width:100%;
-  margin-top:8px;
-  padding:8px;
-  border:none;
-  background:#8e244d;
-  color:white;
-  border-radius:8px;
-  cursor:pointer;
+width:100%;
+margin-top:8px;
+padding:8px;
+border:none;
+background:#8e244d;
+color:white;
+border-radius:8px;
+cursor:pointer;
 }
+
 /* Cart */
+
 #cartBox{
-  background:white;
-  margin:20px;
-  padding:15px;
-  border-radius:12px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+background:white;
+margin:20px;
+padding:15px;
+border-radius:12px;
+box-shadow:0 3px 8px rgba(0,0,0,0.1);
 }
+
 input{
-  width:90%;
-  padding:8px;
-  margin:6px 0;
+width:90%;
+padding:8px;
+margin:6px 0;
 }
+
 </style>
 </head>
+
 <body>
 
 <div class="navbar">
-  <div class="logo">Roz Beauty</div>
-  <div class="cart">🛒 <span id="cartCount">0</span></div>
+<div class="logo">Roz Beauty</div>
+<div class="cart">🛒 <span id="cartCount">0</span></div>
 </div>
 
 <div class="banner">أفضل منتجات الجمال</div>
 
 <div class="search-box">
-  <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
+<input type="text" id="searchInput" placeholder="ابحث عن منتج...">
 </div>
 
 <div class="categories" id="categories"></div>
@@ -158,162 +194,223 @@ input{
 <div class="products" id="products"></div>
 
 <div id="cartBox">
-  <h3>السلة 🛒</h3>
-  <div id="cartItems"></div>
-  <p><strong id="totalPrice"></strong></p>
-  <input type="text" id="name" placeholder="الاسم" required>
-  <input type="text" id="phone" placeholder="رقم الهاتف" required>
-  <input type="text" id="address" placeholder="العنوان" required>
-  <button onclick="submitOrder()">تأكيد الطلب</button>
+<h3>السلة 🛒</h3>
+<div id="cartItems"></div>
+<p><strong id="totalPrice"></strong></p>
+
+<input type="text" id="name" placeholder="الاسم">
+<input type="text" id="phone" placeholder="رقم الهاتف">
+<input type="text" id="address" placeholder="العنوان">
+
+<button onclick="submitOrder()">تأكيد الطلب</button>
+
 </div>
 
 <script>
-// روابط البيانات
-const sheetURL = "https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
-const webAppURL = "https://script.google.com/macros/s/AKfycbwJOdPdKK4Kxkwy-MxGNvPSDI8HGcgkCyVMjDtsNAbYZmdHNxgEGJQQQEzUlzTEujv7TA/exec";
 
-let cart = [];
-let productsData = [];
+/* روابط البيانات */
 
-// أقسام التطبيق
-const sections = <div class="categories">
+const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
+const webAppURL="https://script.google.com/macros/s/AKfycbwJOdPdKK4Kxkwy-MxGNvPSDI8HGcgkCyVMjDtsNAbYZmdHNxgEGJQQQEzUlzTEujv7TA/exec";
 
-<div class="cat">
-<img src="https://i.imgur.com/rb86TWc.jpg">
-<p>العناية بالبشرة</p>
-</div>
+let cart=[];
+let productsData=[];
 
-<div class="cat">
-<img src="https://i.imgur.com/19yLtSC.jpg">
-<p>العناية بالشعر</p>
-</div>
+/* الأقسام */
 
-<div class="cat">
-<img src="https://i.imgur.com/E6QEprz.png">
-<p>المكياج</p>
-</div>
+const sections=[
 
-<div class="cat">
-<img src="https://i.imgur.com/PXpmpHB.png">
-<p>العطور</p>
-</div>
+{name:"العناية بالبشرة",img:"https://i.imgur.com/rb86TWc.jpg"},
+{name:"العناية بالشعر",img:"https://i.imgur.com/19yLtSC.jpg"},
+{name:"المكياج",img:"https://i.imgur.com/E6QEprz.png"},
+{name:"العطور",img:"https://i.imgur.com/PXpmpHB.png"},
+{name:"العروض",img:"https://i.imgur.com/BFBplR8.png"},
+{name:"شنط وملابس",img:"https://i.imgur.com/TS5EgqL.png"},
+{name:"إكسسوارات",img:"https://i.imgur.com/JftwUHq.png"}
 
-<div class="cat">
-<img src="https://i.imgur.com/BFBplR8.png">
-<p>العروض</p>
-</div>
+];
 
-<div class="cat">
-<img src="https://i.imgur.com/TS5EgqL.png">
-<p>شنط وملابس</p>
-</div>
+/* عرض الأقسام */
 
-<div class="cat">
-<img src="https://i.imgur.com/JftwUHq.png">
-<p>إكسسوارات</p>
-</div>
+const catContainer=document.getElementById("categories");
 
-</div>
-
-// عرض الأقسام
-const catContainer = document.getElementById("categories");
 sections.forEach(cat=>{
-  const div = document.createElement("div");
-  div.className="cat";
-  div.innerHTML=`<img src="${cat.img}"><span>${cat.name}</span>`;
-  div.onclick = ()=>filterProducts(cat.name);
-  catContainer.appendChild(div);
+
+const div=document.createElement("div");
+div.className="cat";
+
+div.innerHTML=`<img src="${cat.img}"><span>${cat.name}</span>`;
+
+div.onclick=()=>filterProducts(cat.name);
+
+catContainer.appendChild(div);
+
 });
 
-// جلب المنتجات من Google Sheet
+/* جلب المنتجات */
+
 fetch(sheetURL)
+
 .then(res=>res.json())
+
 .then(data=>{
-  productsData = data;
-  displayProducts(productsData);
+
+productsData=data;
+
+displayProducts(productsData);
+
 });
 
-// عرض المنتجات
+/* عرض المنتجات */
+
 function displayProducts(list){
-  const container = document.getElementById("products");
-  container.innerHTML="";
-  list.forEach(p=>{
-    container.innerHTML+=`
-    <div class="product">
-      <img src="${p.image}">
-      <div class="info">
-        <div class="name">${p.name}</div>
-        <div class="price">${p.price} جنيه</div>
-        <button onclick='addToCart("${p.name}",${p.price})'>أضف للسلة</button>
-      </div>
-    </div>`;
-  });
-}
 
-// تصفية المنتجات حسب القسم
-function filterProducts(category){
-  const filtered = productsData.filter(p=>p.Category===category);
-  displayProducts(filtered);
-}
+const container=document.getElementById("products");
 
-// بحث عن المنتجات
-document.getElementById("searchInput").addEventListener("input", e=>{
-  const query = e.target.value.toLowerCase();
-  const filtered = productsData.filter(p=>p.name.toLowerCase().includes(query));
-  displayProducts(filtered);
+container.innerHTML="";
+
+list.forEach(p=>{
+
+container.innerHTML+=`
+
+<div class="product">
+
+<img src="${p.image}">
+
+<div class="info">
+
+<div class="name">${p.name}</div>
+
+<div class="price">${p.price} جنيه</div>
+
+<button onclick='addToCart("${p.name}",${p.price})'>أضف للسلة</button>
+
+</div>
+
+</div>
+
+`;
+
 });
 
-// إضافة منتج للسلة
-function addToCart(name, price){
-  cart.push({name, price, quantity:1});
-  updateCart();
 }
 
-// تحديث عرض السلة
+/* فلترة حسب القسم */
+
+function filterProducts(category){
+
+const filtered=productsData.filter(p=>p.Category===category);
+
+displayProducts(filtered);
+
+}
+
+/* البحث */
+
+document.getElementById("searchInput").addEventListener("input",e=>{
+
+const query=e.target.value.toLowerCase();
+
+const filtered=productsData.filter(p=>p.name.toLowerCase().includes(query));
+
+displayProducts(filtered);
+
+});
+
+/* إضافة للسلة */
+
+function addToCart(name,price){
+
+cart.push({name,price,quantity:1});
+
+updateCart();
+
+}
+
+/* تحديث السلة */
+
 function updateCart(){
-  const cartDiv = document.getElementById("cartItems");
-  cartDiv.innerHTML="";
-  let total=0;
-  cart.forEach(item=>{
-    total += Number(item.price)*item.quantity;
-    cartDiv.innerHTML+=`<p>${item.name} × ${item.quantity} - ${item.price} جنيه</p>`;
-  });
-  document.getElementById("totalPrice").innerText="الإجمالي: "+total+" جنيه";
-  document.getElementById("cartCount").innerText=cart.length;
+
+const cartDiv=document.getElementById("cartItems");
+
+cartDiv.innerHTML="";
+
+let total=0;
+
+cart.forEach(item=>{
+
+total+=Number(item.price)*item.quantity;
+
+cartDiv.innerHTML+=`<p>${item.name} × ${item.quantity} - ${item.price} جنيه</p>`;
+
+});
+
+document.getElementById("totalPrice").innerText="الإجمالي: "+total+" جنيه";
+
+document.getElementById("cartCount").innerText=cart.length;
+
 }
 
-// إرسال الطلب إلى Google Sheet
-function submitOrder() {
-  if(cart.length===0){
-    alert("السلة فارغة");
-    return;
-  }
+/* إرسال الطلب */
 
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const address = document.getElementById("address").value;
+function submitOrder(){
 
-  let items = cart.map(i=>i.name+" × "+i.quantity).join(" | ");
-  let total = cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+if(cart.length===0){
 
-  fetch(webAppURL,{
-    method:"POST",
-    body:JSON.stringify({name, phone, address, items, total})
-  })
-  .then(res=>res.json())
-  .then(res=>{
-    if(res.status==="success"){
-      alert("تم إرسال الطلب بنجاح 💖");
-      cart=[];
-      updateCart();
-    } else {
-      alert("حدث خطأ أثناء إرسال الطلب: "+res.message);
-    }
-  })
-  .catch(err=>{
-    alert("حدث خطأ أثناء إرسال الطلب: "+err);
-  });
+alert("السلة فارغة");
+
+return;
+
 }
+
+const name=document.getElementById("name").value;
+
+const phone=document.getElementById("phone").value;
+
+const address=document.getElementById("address").value;
+
+let items=cart.map(i=>i.name+" × "+i.quantity).join(" | ");
+
+let total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+
+fetch(webAppURL,{
+
+method:"POST",
+
+body:JSON.stringify({name,phone,address,items,total})
+
+})
+
+.then(res=>res.json())
+
+.then(res=>{
+
+if(res.status==="success"){
+
+alert("تم إرسال الطلب بنجاح 💖");
+
+cart=[];
+
+updateCart();
+
+}
+
+else{
+
+alert("حدث خطأ");
+
+}
+
+})
+
+.catch(err=>{
+
+alert("خطأ في الاتصال");
+
+});
+
+}
+
 </script>
 
 </body>
