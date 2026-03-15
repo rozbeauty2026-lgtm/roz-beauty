@@ -176,15 +176,44 @@ let cart = [];
 let productsData = [];
 
 // أقسام التطبيق
-const sections = [
-  {name:"العناية بالبشرة", img:"https://i.imgur.com/8s4X7kY.jpg"},
-  {name:"العناية بالشعر", img:"https://i.imgur.com/yr9dY1M.jpg"},
-  {name:"المكياج", img:"https://i.imgur.com/1TQWZVf.jpg"},
-  {name:"العطور", img:"https://i.imgur.com/Zl3m7eS.jpg"},
-  {name:"العروض", img:"https://i.imgur.com/6R6Vf1Q.jpg"},
-  {name:"شنط وملابس", img:"https://i.imgur.com/ujXnKZr.jpg"},
-  {name:"إكسسوارات", img:"https://i.imgur.com/7yb9N2Z.jpg"}
-];
+const sections = <div class="categories">
+
+<div class="cat">
+<img src="https://i.imgur.com/rb86TWc.jpg">
+<p>العناية بالبشرة</p>
+</div>
+
+<div class="cat">
+<img src="https://i.imgur.com/19yLtSC.jpg">
+<p>العناية بالشعر</p>
+</div>
+
+<div class="cat">
+<img src="https://i.imgur.com/E6QEprz.png">
+<p>المكياج</p>
+</div>
+
+<div class="cat">
+<img src="https://i.imgur.com/PXpmpHB.png">
+<p>العطور</p>
+</div>
+
+<div class="cat">
+<img src="https://i.imgur.com/BFBplR8.png">
+<p>العروض</p>
+</div>
+
+<div class="cat">
+<img src="https://i.imgur.com/TS5EgqL.png">
+<p>شنط وملابس</p>
+</div>
+
+<div class="cat">
+<img src="https://i.imgur.com/JftwUHq.png">
+<p>إكسسوارات</p>
+</div>
+
+</div>
 
 // عرض الأقسام
 const catContainer = document.getElementById("categories");
