@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roz Beauty</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -233,14 +234,10 @@ border:1px solid #ccc;
 <div class="cart">🛒 <span id="cartCount">0</span></div>
 </div>
 
-<!-- SLIDER -->
-
 <div class="slider">
-
 <img src="https://i.imgur.com/n9ZVlX2.png" class="slide active">
 <img src="https://i.imgur.com/rb86TWc.jpg" class="slide">
 <img src="https://i.imgur.com/19yLtSC.jpg" class="slide">
-
 </div>
 
 <div class="search-box">
@@ -261,10 +258,7 @@ border:1px solid #ccc;
 <input type="text" id="address" placeholder="العنوان">
 
 <button onclick="submitOrder()">تأكيد الطلب</button>
-
 </div>
-
-<!-- MODAL -->
 
 <div class="modal" id="productModal">
 
@@ -296,15 +290,94 @@ border:1px solid #ccc;
 
 <script>
 
+const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
+
+let productsData=[];
+let cart=[];
+
+const sections=[
+{name:"العناية بالبشرة",img:"https://i.imgur.com/rb86TWc.jpg"},
+{name:"العناية بالشعر",img:"https://i.imgur.com/19yLtSC.jpg"},
+{name:"المكياج",img:"https://i.imgur.com/E6QEprz.png"},
+{name:"العطور",img:"https://i.imgur.com/PXpmpHB.png"},
+{name:"العروض",img:"https://i.imgur.com/BFBplR8.png"},
+{name:"شنط وملابس",img:"https://i.imgur.com/TS5EgqL.png"},
+{name:"إكسسوارات",img:"https://i.imgur.com/JftwUHq.png"}
+];
+
+const catContainer=document.getElementById("categories");
+
+sections.forEach(cat=>{
+const div=document.createElement("div");
+div.className="cat";
+div.innerHTML=`<img src="${cat.img}"><span>${cat.name}</span>`;
+div.onclick=()=>filterProducts(cat.name);
+catContainer.appendChild(div);
+});
+
+fetch(sheetURL)
+.then(res=>res.json())
+.then(data=>{
+productsData=data;
+displayProducts(productsData);
+});
+
+function displayProducts(list){
+
+const container=document.getElementById("products");
+container.innerHTML="";
+
+list.forEach(p=>{
+
+const prodDiv=document.createElement("div");
+
+prodDiv.className="product";
+
+prodDiv.innerHTML=`
+<img src="${p.image}">
+<div class="info">
+<div class="name">${p.name}</div>
+<div class="price">${p.price} جنيه</div>
+<button onclick='openModal(${JSON.stringify(p)})'>تفاصيل</button>
+</div>
+`;
+
+container.appendChild(prodDiv);
+
+});
+
+}
+
+function filterProducts(category){
+
+const filtered=productsData.filter(p=>p.Category===category);
+
+displayProducts(filtered);
+
+}
+
+document.getElementById("searchInput").addEventListener("input",e=>{
+
+const query=e.target.value.toLowerCase();
+
+const filtered=productsData.filter(p=>p.name.toLowerCase().includes(query));
+
+displayProducts(filtered);
+
+});
+
 /* SLIDER */
 
 let slides=document.querySelectorAll(".slide");
+
 let index=0;
 
 setInterval(()=>{
 
 slides[index].classList.remove("active");
+
 index=(index+1)%slides.length;
+
 slides[index].classList.add("active");
 
 },3000);
