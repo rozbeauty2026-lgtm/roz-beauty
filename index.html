@@ -6,7 +6,7 @@
 <title>Roz Beauty</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:'Cairo',sans-serif;background:#f5f5f5;direction:rtl;transition:0.3s;}
+body{margin:0;font-family:'Cairo',sans-serif;background:#f5f5f5;direction:rtl;transition:background 0.3s,color 0.3s;}
 body.dark{background:#121212;color:white;}
 .navbar{background:white;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);position:sticky;top:0;z-index:100;}
 body.dark .navbar{background:#1f1f1f;color:white;}
@@ -106,20 +106,6 @@ label{display:block;margin-top:10px;margin-bottom:5px;}
 </div>
 
 <div class="settings-option">
-<label>حجم الخط</label>
-<select id="fontSizeSelect">
-<option value="14">صغير</option>
-<option value="16">متوسط</option>
-<option value="18">كبير</option>
-</select>
-</div>
-
-<div class="settings-option">
-<label>الأقسام المفضلة</label>
-<input type="text" id="favoriteSections" placeholder="اكتب أسماء الأقسام مفصولة بفواصل">
-</div>
-
-<div class="settings-option">
 <label>الاسم</label>
 <input type="text" id="userName">
 <label>رقم الهاتف</label>
@@ -155,25 +141,18 @@ label{display:block;margin-top:10px;margin-bottom:5px;}
 
 <script>
 // SLIDER
-let slides=document.querySelectorAll(".slide"),index=0;
+let slides=document.querySelectorAll(".slide");
+let index=0;
 setInterval(()=>{slides[index].classList.remove("active");index=(index+1)%slides.length;slides[index].classList.add("active");},3000);
 
 // PAGES
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
-// PRODUCTS DATA
+// PRODUCTS
 const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 const webAppURL="https://script.google.com/macros/s/AKfycbwJOdPdKK4Kxkwy-MxGNvPSDI8HGcgkCyVMjDtsNAbYZmdHNxgEGJQQQEzUlzTEujv7TA/exec";
-let cart=[],productsData=[];
-const sections=[
-{name:"العناية بالبشرة",img:"https://i.imgur.com/rb86TWc.jpg"},
-{name:"العناية بالشعر",img:"https://i.imgur.com/19yLtSC.jpg"},
-{name:"المكياج",img:"https://i.imgur.com/E6QEprz.png"},
-{name:"العطور",img:"https://i.imgur.com/PXpmpHB.png"},
-{name:"العروض",img:"https://i.imgur.com/BFBplR8.png"},
-{name:"شنط وملابس",img:"https://i.imgur.com/TS5EgqL.png"},
-{name:"إكسسوارات",img:"https://i.imgur.com/JftwUHq.png"}
-];
+let cart=[]; let productsData=[];
+const sections=[{name:"العناية بالبشرة",img:"https://i.imgur.com/rb86TWc.jpg"},{name:"العناية بالشعر",img:"https://i.imgur.com/19yLtSC.jpg"},{name:"المكياج",img:"https://i.imgur.com/E6QEprz.png"},{name:"العطور",img:"https://i.imgur.com/PXpmpHB.png"},{name:"العروض",img:"https://i.imgur.com/BFBplR8.png"},{name:"شنط وملابس",img:"https://i.imgur.com/TS5EgqL.png"},{name:"إكسسوارات",img:"https://i.imgur.com/JftwUHq.png"}];
 const catContainer=document.getElementById("categories");
 sections.forEach(cat=>{const div=document.createElement("div");div.className="cat";div.innerHTML=`<img src="${cat.img}"><span>${cat.name}</span>`;div.onclick=()=>filterProducts(cat.name);catContainer.appendChild(div);});
 
@@ -183,28 +162,26 @@ fetch(sheetURL).then(res=>res.json()).then(data=>{productsData=data;displayProdu
 // DISPLAY PRODUCTS
 function displayProducts(list){
 const container=document.getElementById("products");container.innerHTML="";
-list.forEach(p=>{const prodDiv=document.createElement("div");prodDiv.className="product";
+list.forEach(p=>{
+const prodDiv=document.createElement("div");prodDiv.className="product";
 prodDiv.innerHTML=`<img src="${p.image}"><div class="info"><div class="name">${p.name}</div><div class="price">${p.price} جنيه</div><button>تفاصيل</button></div>`;
-const btn=prodDiv.querySelector("button");btn.onclick=()=>openModal(p);container.appendChild(prodDiv);});
+const btn=prodDiv.querySelector("button");btn.onclick=()=>openModal(p);
+container.appendChild(prodDiv);
+});
 }
 
-// FILTER BY CATEGORY
+// FILTER
 function filterProducts(category){displayProducts(productsData.filter(p=>p.Category===category));}
 
 // SEARCH
 document.getElementById("searchInput").addEventListener("input",e=>{const query=e.target.value.toLowerCase();displayProducts(productsData.filter(p=>p.name.toLowerCase().includes(query)));});
 
 // MODAL
-const modal=document.getElementById("productModal");
-const modalClose=document.getElementById("modalClose");
-const modalName=document.getElementById("modalName");
-const modalImg=document.getElementById("modalImg");
-const modalDescription=document.getElementById("modalDescription");
-const modalColor=document.getElementById("modalColor");
-const modalSize=document.getElementById("modalSize");
-const modalQuantity=document.getElementById("modalQuantity");
-const modalPrice=document.getElementById("modalPrice");
-const modalAddToCart=document.getElementById("modalAddToCart");
+const modal=document.getElementById("productModal");const modalClose=document.getElementById("modalClose");
+const modalName=document.getElementById("modalName");const modalImg=document.getElementById("modalImg");
+const modalDescription=document.getElementById("modalDescription");const modalColor=document.getElementById("modalColor");
+const modalSize=document.getElementById("modalSize");const modalQuantity=document.getElementById("modalQuantity");
+const modalPrice=document.getElementById("modalPrice");const modalAddToCart=document.getElementById("modalAddToCart");
 
 function openModal(p){
 modal.style.display="flex";modalName.innerText=p.name;modalImg.src=p.image;modalDescription.innerText=p.description||"";modalQuantity.value=1;
@@ -214,7 +191,7 @@ if(p.sizes){p.sizes.split(",").forEach(s=>{const opt=document.createElement("opt
 let priceMap={};if(p.price_color_size){p.price_color_size.split(",").forEach(pc=>{const [key,val]=pc.split(":");priceMap[key.trim()]=Number(val);});}
 function updateModalPrice(){const key=`${modalColor.value}_${modalSize.value}`;let price=priceMap[key]||Number(p.price);modalPrice.innerText=price*Number(modalQuantity.value);}
 modalColor.onchange=updateModalPrice;modalSize.onchange=updateModalPrice;modalQuantity.oninput=updateModalPrice;updateModalPrice();
-modalAddToCart.onclick=()=>{const qty=Number(modalQuantity.value);const key=`${modalColor.value}_${modalSize.value}`;let price=priceMap[key]||Number(p.price);addToCart(`${p.name} ${modalColor.value} ${modalSize.value}`,price*qty);modal.style.display="none";};
+modalAddToCart.onclick=()=>{const qty=Number(modalQuantity.value);const key=`${modalColor.value}_${modalSize.value}`;let price=priceMap[key]||Number(p.price);addToCart(`${p.name} ${modalColor.value} ${modalSize.value}`,price*qty);alert("تم إضافة المنتج للسلة");modal.style.display="none";};
 }
 modalClose.onclick=()=>modal.style.display="none";window.onclick=e=>{if(e.target==modal) modal.style.display="none";};
 
@@ -223,51 +200,33 @@ function addToCart(name,price){let item=cart.find(i=>i.name===name);if(item){ite
 function updateCart(){const cartDiv=document.getElementById("cartItems");cartDiv.innerHTML="";let total=0;cart.forEach(item=>{total+=Number(item.price)*item.quantity;cartDiv.innerHTML+=`<p>${item.name} × ${item.quantity} - ${item.price} جنيه</p>`;});document.getElementById("totalPrice").innerText="الإجمالي: "+total+" جنيه";document.getElementById("cartCount").innerText=cart.length;}
 
 // SUBMIT ORDER
-function submitOrder(){
-if(cart.length===0){alert("السلة فارغة"); return;}
-const name=document.getElementById("name").value;
-const phone=document.getElementById("phone").value;
-const address=document.getElementById("address").value;
+function submitOrder(){if(cart.length===0){alert("السلة فارغة"); return;}
+const name=document.getElementById("name").value;const phone=document.getElementById("phone").value;const address=document.getElementById("address").value;
 if(!name||!phone||!address){alert("اكمل البيانات"); return;}
-let items=cart.map(i=>i.name+" × "+i.quantity).join(" | ");
-let total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+let items=cart.map(i=>i.name+" × "+i.quantity).join(" | ");let total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
 fetch(webAppURL,{method:"POST",body:JSON.stringify({name,phone,address,items,total})})
 .then(res=>res.json())
-.then(res=>{if(res.status==="success"){alert("تم إرسال الطلب بنجاح 💖");cart=[];updateCart();showPage('homePage');}else{alert("حدث خطأ");}})
-.catch(err=>alert("خطأ في الاتصال"));
-}
+.then(res=>{if(res.status==="success"){alert("تم إرسال الطلب بنجاح 💖");cart=[];updateCart();showPage('homePage');}else{alert("حدث خطأ");}}).catch(err=>alert("خطأ في الاتصال"));}
 
 // SETTINGS
-const toggleDark=document.getElementById("toggleDark");
-const languageSelect=document.getElementById("languageSelect");
-const fontSizeSelect=document.getElementById("fontSizeSelect");
-const favoriteSections=document.getElementById("favoriteSections");
-const userName=document.getElementById("userName");
-const userPhone=document.getElementById("userPhone");
-const userAddress=document.getElementById("userAddress");
+const toggleDark=document.getElementById("toggleDark");const languageSelect=document.getElementById("languageSelect");
+const userName=document.getElementById("userName");const userPhone=document.getElementById("userPhone");const userAddress=document.getElementById("userAddress");
 const saveUserData=document.getElementById("saveUserData");
 
-// Load settings from localStorage
+// Load settings
 if(localStorage.getItem("darkMode")==="true") document.body.classList.add("dark");
 if(localStorage.getItem("language")) languageSelect.value=localStorage.getItem("language");
-if(localStorage.getItem("fontSize")) document.body.style.fontSize=localStorage.getItem("fontSize")+"px"; fontSizeSelect.value=localStorage.getItem("fontSize");
-if(localStorage.getItem("favoriteSections")) favoriteSections.value=localStorage.getItem("favoriteSections");
 if(localStorage.getItem("userName")) userName.value=localStorage.getItem("userName");
 if(localStorage.getItem("userPhone")) userPhone.value=localStorage.getItem("userPhone");
 if(localStorage.getItem("userAddress")) userAddress.value=localStorage.getItem("userAddress");
 
 // Dark Mode toggle
 toggleDark.onclick=()=>{document.body.classList.toggle("dark");localStorage.setItem("darkMode",document.body.classList.contains("dark"));};
-
 // Language change
 languageSelect.onchange=()=>{localStorage.setItem("language",languageSelect.value);alert("تم تغيير اللغة إلى "+languageSelect.options[languageSelect.selectedIndex].text);};
-
-// Font size
-fontSizeSelect.onchange=()=>{document.body.style.fontSize=fontSizeSelect.value+"px";localStorage.setItem("fontSize",fontSizeSelect.value);};
-
 // Save user data
-saveUserData.onclick=()=>{localStorage.setItem("userName",userName.value);localStorage.setItem("userPhone",userPhone.value);localStorage.setItem("userAddress",userAddress.value);localStorage.setItem("favoriteSections",favoriteSections.value);alert("تم حفظ البيانات بنجاح!");};
-
+saveUserData.onclick=()=>{localStorage.setItem("userName",userName.value);localStorage.setItem("userPhone",userPhone.value);localStorage.setItem("userAddress",userAddress.value);alert("تم حفظ البيانات بنجاح!");};
 </script>
+
 </body>
      </html>
