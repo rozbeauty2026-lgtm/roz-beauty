@@ -6,7 +6,7 @@
 <title>Roz Beauty</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:'Cairo',sans-serif;background:#f5f5f5;direction:rtl;transition:background 0.3s,color 0.3s,font-size 0.3s;}
+body{margin:0;font-family:'Cairo',sans-serif;background:#f5f5f5;direction:rtl;transition:0.3s;}
 body.dark{background:#121212;color:white;}
 .navbar{background:white;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);position:sticky;top:0;z-index:100;}
 body.dark .navbar{background:#1f1f1f;color:white;}
@@ -62,14 +62,17 @@ label{display:block;margin-top:10px;margin-bottom:5px;}
 
 <!-- PAGES -->
 <div id="homePage" class="page active">
+
 <div class="slider">
 <img src="https://i.imgur.com/n9ZVlX2.png" class="slide active">
 <img src="https://i.imgur.com/rb86TWc.jpg" class="slide">
 <img src="https://i.imgur.com/19yLtSC.jpg" class="slide">
 </div>
+
 <div class="search-box">
 <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
 </div>
+
 <div class="categories" id="categories"></div>
 <div class="products" id="products"></div>
 </div>
@@ -103,26 +106,8 @@ label{display:block;margin-top:10px;margin-bottom:5px;}
 </div>
 
 <div class="settings-option">
-<label>الاسم</label>
-<input type="text" id="userName">
-<label>رقم الهاتف</label>
-<input type="text" id="userPhone">
-<label>العنوان</label>
-<input type="text" id="userAddress">
-<button id="saveUserData">حفظ البيانات</button>
-</div>
-
-<div class="settings-option">
-<label>الإشعارات</label>
-<select id="notifications">
-<option value="on">تفعيل</option>
-<option value="off">تعطيل</option>
-</select>
-</div>
-
-<div class="settings-option">
 <label>حجم الخط</label>
-<select id="fontSize">
+<select id="fontSizeSelect">
 <option value="14">صغير</option>
 <option value="16">متوسط</option>
 <option value="18">كبير</option>
@@ -131,18 +116,18 @@ label{display:block;margin-top:10px;margin-bottom:5px;}
 
 <div class="settings-option">
 <label>الأقسام المفضلة</label>
-<select id="favoriteSections" multiple style="height:100px;">
-<option value="العناية بالبشرة">العناية بالبشرة</option>
-<option value="العناية بالشعر">العناية بالشعر</option>
-<option value="المكياج">المكياج</option>
-<option value="العطور">العطور</option>
-<option value="العروض">العروض</option>
-<option value="شنط وملابس">شنط وملابس</option>
-<option value="إكسسوارات">إكسسوارات</option>
-</select>
+<input type="text" id="favoriteSections" placeholder="اكتب أسماء الأقسام مفصولة بفواصل">
 </div>
 
-<button id="saveAllSettings">حفظ جميع الإعدادات</button>
+<div class="settings-option">
+<label>الاسم</label>
+<input type="text" id="userName">
+<label>رقم الهاتف</label>
+<input type="text" id="userPhone">
+<label>العنوان</label>
+<input type="text" id="userAddress">
+<button id="saveUserData">حفظ البيانات</button>
+</div>
 </div>
 
 <div class="modal" id="productModal">
@@ -169,26 +154,17 @@ label{display:block;margin-top:10px;margin-bottom:5px;}
 </div>
 
 <script>
-/* SLIDER */
-let slides=document.querySelectorAll(".slide");
-let index=0;
-setInterval(()=>{
-slides[index].classList.remove("active");
-index=(index+1)%slides.length;
-slides[index].classList.add("active");
-},3000);
+// SLIDER
+let slides=document.querySelectorAll(".slide"),index=0;
+setInterval(()=>{slides[index].classList.remove("active");index=(index+1)%slides.length;slides[index].classList.add("active");},3000);
 
-/* PAGES */
-function showPage(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-}
+// PAGES
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
-/* PRODUCTS DATA */
+// PRODUCTS DATA
 const sheetURL="https://opensheet.elk.sh/1v0nH08PXdDqThcLCpMaWv-hzQCAHdGQG3kYLAQoVQEs/Sheet1";
 const webAppURL="https://script.google.com/macros/s/AKfycbwJOdPdKK4Kxkwy-MxGNvPSDI8HGcgkCyVMjDtsNAbYZmdHNxgEGJQQQEzUlzTEujv7TA/exec";
-let cart=[];
-let productsData=[];
+let cart=[],productsData=[];
 const sections=[
 {name:"العناية بالبشرة",img:"https://i.imgur.com/rb86TWc.jpg"},
 {name:"العناية بالشعر",img:"https://i.imgur.com/19yLtSC.jpg"},
@@ -196,39 +172,29 @@ const sections=[
 {name:"العطور",img:"https://i.imgur.com/PXpmpHB.png"},
 {name:"العروض",img:"https://i.imgur.com/BFBplR8.png"},
 {name:"شنط وملابس",img:"https://i.imgur.com/TS5EgqL.png"},
-{name:"إكسسوارات",img:"https://i.imgur.com/JftwUH.png"}
+{name:"إكسسوارات",img:"https://i.imgur.com/JftwUHq.png"}
 ];
 const catContainer=document.getElementById("categories");
-sections.forEach(cat=>{
-const div=document.createElement("div");
-div.className="cat";
-div.innerHTML=`<img src="${cat.img}"><span>${cat.name}</span>`;
-div.onclick=()=>filterProducts(cat.name);
-catContainer.appendChild(div);
-});
+sections.forEach(cat=>{const div=document.createElement("div");div.className="cat";div.innerHTML=`<img src="${cat.img}"><span>${cat.name}</span>`;div.onclick=()=>filterProducts(cat.name);catContainer.appendChild(div);});
 
-/* FETCH PRODUCTS */
-fetch(sheetURL).then(res=>res.json()).then(data=>{productsData=data; displayProducts(productsData);});
+// FETCH PRODUCTS
+fetch(sheetURL).then(res=>res.json()).then(data=>{productsData=data;displayProducts(productsData);});
 
-/* DISPLAY PRODUCTS */
+// DISPLAY PRODUCTS
 function displayProducts(list){
-const container=document.getElementById("products"); container.innerHTML="";
-list.forEach(p=>{
-const prodDiv=document.createElement("div"); prodDiv.className="product";
+const container=document.getElementById("products");container.innerHTML="";
+list.forEach(p=>{const prodDiv=document.createElement("div");prodDiv.className="product";
 prodDiv.innerHTML=`<img src="${p.image}"><div class="info"><div class="name">${p.name}</div><div class="price">${p.price} جنيه</div><button>تفاصيل</button></div>`;
-prodDiv.querySelector("button").onclick=()=>openModal(p); container.appendChild(prodDiv);
-});
+const btn=prodDiv.querySelector("button");btn.onclick=()=>openModal(p);container.appendChild(prodDiv);});
 }
 
-/* FILTER BY CATEGORY */
+// FILTER BY CATEGORY
 function filterProducts(category){displayProducts(productsData.filter(p=>p.Category===category));}
 
-/* SEARCH */
-document.getElementById("searchInput").addEventListener("input",e=>{
-displayProducts(productsData.filter(p=>p.name.toLowerCase().includes(e.target.value.toLowerCase())));
-});
+// SEARCH
+document.getElementById("searchInput").addEventListener("input",e=>{const query=e.target.value.toLowerCase();displayProducts(productsData.filter(p=>p.name.toLowerCase().includes(query)));});
 
-/* MODAL */
+// MODAL
 const modal=document.getElementById("productModal");
 const modalClose=document.getElementById("modalClose");
 const modalName=document.getElementById("modalName");
@@ -241,49 +207,67 @@ const modalPrice=document.getElementById("modalPrice");
 const modalAddToCart=document.getElementById("modalAddToCart");
 
 function openModal(p){
-modal.style.display="flex";
-modalName.innerText=p.name; modalImg.src=p.image; modalDescription.innerText=p.description||""; modalQuantity.value=1;
-modalColor.innerHTML=""; modalSize.innerHTML="";
-if(p.colors){p.colors.split(",").forEach(c=>{const opt=document.createElement("option"); opt.value=c.trim(); opt.innerText=c.trim(); modalColor.appendChild(opt);});}
-if(p.sizes){p.sizes.split(",").forEach(s=>{const opt=document.createElement("option"); opt.value=s.trim(); opt.innerText=s.trim(); modalSize.appendChild(opt);});}
-let priceMap={}; if(p.price_color_size){p.price_color_size.split(",").forEach(pc=>{const [key,val]=pc.split(":"); priceMap[key.trim()]=Number(val);});}
-function updateModalPrice(){const key=`${modalColor.value}_${modalSize.value}`; let price=priceMap[key]||Number(p.price); modalPrice.innerText=price*Number(modalQuantity.value);}
-modalColor.onchange=updateModalPrice; modalSize.onchange=updateModalPrice; modalQuantity.oninput=updateModalPrice; updateModalPrice();
-modalAddToCart.onclick=()=>{const qty=Number(modalQuantity.value); const key=`${modalColor.value}_${modalSize.value}`; let price=priceMap[key]||Number(p.price); addToCart(`${p.name} ${modalColor.value} ${modalSize.value}`,price*qty); modal.style.display="none";};
+modal.style.display="flex";modalName.innerText=p.name;modalImg.src=p.image;modalDescription.innerText=p.description||"";modalQuantity.value=1;
+modalColor.innerHTML="";modalSize.innerHTML="";
+if(p.colors){p.colors.split(",").forEach(c=>{const opt=document.createElement("option");opt.value=c.trim();opt.innerText=c.trim();modalColor.appendChild(opt);});}
+if(p.sizes){p.sizes.split(",").forEach(s=>{const opt=document.createElement("option");opt.value=s.trim();opt.innerText=s.trim();modalSize.appendChild(opt);});}
+let priceMap={};if(p.price_color_size){p.price_color_size.split(",").forEach(pc=>{const [key,val]=pc.split(":");priceMap[key.trim()]=Number(val);});}
+function updateModalPrice(){const key=`${modalColor.value}_${modalSize.value}`;let price=priceMap[key]||Number(p.price);modalPrice.innerText=price*Number(modalQuantity.value);}
+modalColor.onchange=updateModalPrice;modalSize.onchange=updateModalPrice;modalQuantity.oninput=updateModalPrice;updateModalPrice();
+modalAddToCart.onclick=()=>{const qty=Number(modalQuantity.value);const key=`${modalColor.value}_${modalSize.value}`;let price=priceMap[key]||Number(p.price);addToCart(`${p.name} ${modalColor.value} ${modalSize.value}`,price*qty);modal.style.display="none";};
 }
-modalClose.onclick=()=>modal.style.display="none"; window.onclick=e=>{if(e.target==modal) modal.style.display="none";};
+modalClose.onclick=()=>modal.style.display="none";window.onclick=e=>{if(e.target==modal) modal.style.display="none";};
 
-/* CART */
-function addToCart(name,price){let item=cart.find(i=>i.name===name); if(item){item.quantity++;} else{cart.push({name,price,quantity:1});} updateCart();}
-function updateCart(){const cartDiv=document.getElementById("cartItems"); cartDiv.innerHTML=""; let total=0; cart.forEach(item=>{total+=Number(item.price)*item.quantity; cartDiv.innerHTML+=`<p>${item.name} × ${item.quantity} - ${item.price} جنيه</p>`;}); document.getElementById("totalPrice").innerText="الإجمالي: "+total+" جنيه"; document.getElementById("cartCount").innerText=cart.length;}
-function submitOrder(){if(cart.length===0){alert("السلة فارغة"); return;} const name=document.getElementById("name").value; const phone=document.getElementById("phone").value; const address=document.getElementById("address").value; if(!name||!phone||!address){alert("اكمل البيانات"); return;} let items=cart.map(i=>i.name+" × "+i.quantity).join(" | "); let total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0); fetch(webAppURL,{method:"POST",body:JSON.stringify({name,phone,address,items,total})}).then(res=>res.json()).then(res=>{if(res.status==="success"){alert("تم إرسال الطلب بنجاح 💖");cart=[];updateCart();showPage('homePage');} else{alert("حدث خطأ");}}).catch(err=>alert("خطأ في الاتصال"));}
+// CART
+function addToCart(name,price){let item=cart.find(i=>i.name===name);if(item){item.quantity++;}else{cart.push({name,price,quantity:1});}updateCart();}
+function updateCart(){const cartDiv=document.getElementById("cartItems");cartDiv.innerHTML="";let total=0;cart.forEach(item=>{total+=Number(item.price)*item.quantity;cartDiv.innerHTML+=`<p>${item.name} × ${item.quantity} - ${item.price} جنيه</p>`;});document.getElementById("totalPrice").innerText="الإجمالي: "+total+" جنيه";document.getElementById("cartCount").innerText=cart.length;}
 
-/* SETTINGS */
+// SUBMIT ORDER
+function submitOrder(){
+if(cart.length===0){alert("السلة فارغة"); return;}
+const name=document.getElementById("name").value;
+const phone=document.getElementById("phone").value;
+const address=document.getElementById("address").value;
+if(!name||!phone||!address){alert("اكمل البيانات"); return;}
+let items=cart.map(i=>i.name+" × "+i.quantity).join(" | ");
+let total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+fetch(webAppURL,{method:"POST",body:JSON.stringify({name,phone,address,items,total})})
+.then(res=>res.json())
+.then(res=>{if(res.status==="success"){alert("تم إرسال الطلب بنجاح 💖");cart=[];updateCart();showPage('homePage');}else{alert("حدث خطأ");}})
+.catch(err=>alert("خطأ في الاتصال"));
+}
+
+// SETTINGS
 const toggleDark=document.getElementById("toggleDark");
 const languageSelect=document.getElementById("languageSelect");
+const fontSizeSelect=document.getElementById("fontSizeSelect");
+const favoriteSections=document.getElementById("favoriteSections");
 const userName=document.getElementById("userName");
 const userPhone=document.getElementById("userPhone");
 const userAddress=document.getElementById("userAddress");
 const saveUserData=document.getElementById("saveUserData");
-const notifications=document.getElementById("notifications");
-const fontSizeSelect=document.getElementById("fontSize");
-const favoriteSections=document.getElementById("favoriteSections");
-const saveAllSettings=document.getElementById("saveAllSettings");
 
-// Load settings
-window.addEventListener("load",()=>{
+// Load settings from localStorage
 if(localStorage.getItem("darkMode")==="true") document.body.classList.add("dark");
 if(localStorage.getItem("language")) languageSelect.value=localStorage.getItem("language");
+if(localStorage.getItem("fontSize")) document.body.style.fontSize=localStorage.getItem("fontSize")+"px"; fontSizeSelect.value=localStorage.getItem("fontSize");
+if(localStorage.getItem("favoriteSections")) favoriteSections.value=localStorage.getItem("favoriteSections");
 if(localStorage.getItem("userName")) userName.value=localStorage.getItem("userName");
 if(localStorage.getItem("userPhone")) userPhone.value=localStorage.getItem("userPhone");
 if(localStorage.getItem("userAddress")) userAddress.value=localStorage.getItem("userAddress");
-if(localStorage.getItem("notifications")) notifications.value=localStorage.getItem("notifications");
-if(localStorage.getItem("fontSize")) fontSizeSelect.value=localStorage.getItem("fontSize");
-if(localStorage.getItem("favoriteSections")){ let favs=JSON.parse(localStorage.getItem("favoriteSections")); Array.from(favoriteSections.options).forEach(opt=>{if(favs.includes(opt.value)) opt.selected=true;});}
-applyFontSize();
-});
 
-// Dark Mode
-toggleDark.onclick=()=>{
-document.body.classList.toggle("dark");
-localStorage.setItem("darkMode",document.body.classList.contains
+// Dark Mode toggle
+toggleDark.onclick=()=>{document.body.classList.toggle("dark");localStorage.setItem("darkMode",document.body.classList.contains("dark"));};
+
+// Language change
+languageSelect.onchange=()=>{localStorage.setItem("language",languageSelect.value);alert("تم تغيير اللغة إلى "+languageSelect.options[languageSelect.selectedIndex].text);};
+
+// Font size
+fontSizeSelect.onchange=()=>{document.body.style.fontSize=fontSizeSelect.value+"px";localStorage.setItem("fontSize",fontSizeSelect.value);};
+
+// Save user data
+saveUserData.onclick=()=>{localStorage.setItem("userName",userName.value);localStorage.setItem("userPhone",userPhone.value);localStorage.setItem("userAddress",userAddress.value);localStorage.setItem("favoriteSections",favoriteSections.value);alert("تم حفظ البيانات بنجاح!");};
+
+</script>
+</body>
+     </html>
