@@ -14,12 +14,13 @@
 
     <div id="root"></div>
 
+    <script type="text/babel" src="Categories.jsx"></script>
+    <script type="text/babel" src="Products.jsx"></script>
     <script type="text/babel" src="App.jsx"></script>
     
     <script type="text/babel">
-        // كود تشغيل React وربطه بالواجهة
-        const rootElement = document.getElementById('root');
-        const root = ReactDOM.createRoot(rootElement);
+        // تشغيل التطبيق وضخّه في الـ root
+        const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
 
